@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
-from geopy.geocoders import Nominatim
-from geopy.extra.rate_limiter import RateLimiter
 from folium.plugins import HeatMap
 
 # Load and cache the data
