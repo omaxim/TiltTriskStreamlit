@@ -9,23 +9,9 @@ from folium.plugins import HeatMap
 # Load and cache the data
 @st.cache_data
 def load_data():
-    return pd.read_feather('tiltrisk.feather')
+    return pd.read_feather('tiltrisk_geocoded.feather')
 
 data = load_data()
-
-# Initialize geolocator
-geolocator = Nominatim(user_agent="streamlit_app")
-geocode = RateLimiter(geolocator.geocode, min_delay_seconds=1)
-
-# Extract latitude and longitude for each address
-@st.cache_data
-def geocode_addresses(df):
-    df['location'] = df['address'].apply(geocode)
-    df['latitude'] = df['location'].apply(lambda loc: loc.latitude if loc else None)
-    df['longitude'] = df['location'].apply(lambda loc: loc.longitude if loc else None)
-    return df.dropna(subset=['latitude', 'longitude'])
-
-data = geocode_addresses(data)
 
 # Create the base map
 m = folium.Map(location=[data['latitude'].mean(), data['longitude'].mean()], zoom_start=12)
