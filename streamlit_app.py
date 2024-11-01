@@ -2,9 +2,9 @@ import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import folium_static
-from folium.plugins import HeatMapWithTime, HeatMap
 import geopandas as gpd
 from shapely.geometry import Point
+import leafmap.foliumap as leafmap
 nuts_gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
 
 # Display map in Streamlit
@@ -89,3 +89,18 @@ folium.Choropleth(
 # Add layer control and display the map
 folium.LayerControl().add_to(m)
 folium_static(m)
+
+# Initialize a leafmap.Map object centered on the data points
+m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
+
+# Add a choropleth layer based on the NUTS boundaries
+m2.add_data(
+    nuts_gdf_levelled,
+    column=weight,
+    cmap="YlOrRd",
+    layer_name="PD Shock Intensity by Region",
+    legend_title="PD Shock Intensity by Region"
+)
+
+# Display the map in Streamlit
+m2.to_streamlit(width=700, height=500)
