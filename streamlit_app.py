@@ -3,6 +3,7 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 from folium.plugins import HeatMapWithTime
+from collections import OrderedDict
 
 # Display map in Streamlit
 st.title("Heatmap Over Time by Address")
@@ -34,19 +35,19 @@ valid_shock_scenarios = data.loc[data['baseline_scenario'] == baseline_scenario,
 # Select shock scenario based on valid options from filtered data
 shock_scenario = st.selectbox('Shock Scenario', valid_shock_scenarios)
 
-# Filter data to include only rows with valid latitude, longitude, and selected weight
+
+
+# Filter data to include only rows with valid latitude, longitude, and weight
 data_withaddress = data.loc[
     (data['baseline_scenario'] == baseline_scenario) &
     (data['shock_scenario'] == shock_scenario)
-].dropna(subset=['latitude', 'longitude', 'term',weight]).copy()
+].dropna(subset=['latitude', 'longitude', 'term', 'weight']).copy()
 
-# Group data by 'term' and create a list of heatmap data for each time point
-# Each entry in the list corresponds to the data for a particular 'term' time period
-heat_data = [
-    data_withaddress[data_withaddress['term'] == t][['latitude', 'longitude', weight]].values.tolist()
-    for t in sorted(data_withaddress['term'].unique())
-]
-st.text(heat_data[0])
+# Group data by 'term' and create an OrderedDict for heatmap data
+heat_data = OrderedDict()
+for t in sorted(data_withaddress['term'].unique()):
+    term_data = data_withaddress[data_withaddress['term'] == t][['latitude', 'longitude', 'weight']].values.tolist()
+    heat_data[t] = term_data  # Add data for each term as a list of [lat, lon, weight] tuples
 
 # Create the base map
 m = folium.Map(
