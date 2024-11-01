@@ -86,4 +86,4 @@ folium.Choropleth(
 
 # Add layer control and display the map
 folium.LayerControl().add_to(m)
-st.folium(m)
+st_folium(m)
