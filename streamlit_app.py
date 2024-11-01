@@ -54,10 +54,10 @@ m = folium.Map(
     zoom_start=8
 )
 
-# Add a heatmap layer with time support
-HeatMapWithTime(
-    heat_data
-).add_to(m)
+## Add a heatmap layer with time support
+#HeatMapWithTime(
+#    heat_data
+#).add_to(m)
 # Add a heatmap layer with time support
 HeatMap(
     heat_data[0]
