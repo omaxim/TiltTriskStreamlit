@@ -68,10 +68,6 @@ else:
         # Aggregate data by NUTS region
         aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].mean().reset_index()
 
-        # Debug: Check unique NUTS_IDs before merging
-        st.write("Unique NUTS_IDs in nuts_gdf_levelled:", nuts_gdf_levelled['NUTS_ID'].unique())
-        st.write("Unique NUTS_IDs in aggregated_data:", aggregated_data['NUTS_ID'].unique())
-
         # Merge aggregated data back with NUTS shapefile
         nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
 
