@@ -50,7 +50,7 @@ heat_data = [
 # Create the base map
 m = folium.Map(
     location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
-    zoom_start=12
+    zoom_start=8
 )
 
 # Add a heatmap layer with time support
