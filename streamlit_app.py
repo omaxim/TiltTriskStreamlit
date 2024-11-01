@@ -8,8 +8,12 @@ from collections import OrderedDict
 # Display map in Streamlit
 st.title("Heatmap Over Time by Address")
 
-# Load the data (consider caching if loading is expensive)
-data = pd.read_feather('tiltrisk_geocoded.feather')
+# Load and cache the data
+@st.cache_data
+def load_data():
+    return pd.read_feather('tiltrisk_geocoded.feather')
+
+data = load_data()
 
 # Selection for weight column to visualize
 weight = st.selectbox(
@@ -17,7 +21,7 @@ weight = st.selectbox(
     [
         'pd_baseline',
         'pd_shock',
-        'crispy_perc_value_change',
+        'crispy_perc_value_change', 
         'pd_difference'
     ]
 )
@@ -31,23 +35,21 @@ valid_shock_scenarios = data.loc[data['baseline_scenario'] == baseline_scenario,
 # Select shock scenario based on valid options from filtered data
 shock_scenario = st.selectbox('Shock Scenario', valid_shock_scenarios)
 
-# Filter data to include only rows with valid data
+# Filter data to include only rows with valid latitude, longitude, and weight
 data_withaddress = data.loc[
     (data['baseline_scenario'] == baseline_scenario) &
     (data['shock_scenario'] == shock_scenario)
 ].dropna(subset=['latitude', 'longitude', 'term', weight]).copy()
 
 # Group data by 'term' and create an OrderedDict for heatmap data
-# Ensure 'term' is a datetime column or convert it to a suitable format
 heat_data = OrderedDict()
 for t in sorted(data_withaddress['term'].unique()):
     term_data = data_withaddress[data_withaddress['term'] == t][['latitude', 'longitude', weight]].values.tolist()
-    # Assuming 't' is a datetime object, use its timestamp as the key
-    heat_data[t.timestamp()] = term_data
+    heat_data[t] = term_data  # Add data for each term as a list of [lat, lon, weight] tuples
 
-# Create the base map (consider using folium.Figure for more control)
+# Create the base map
 m = folium.Map(
-    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()],
+    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
     zoom_start=12
 )
 
@@ -60,8 +62,7 @@ HeatMapWithTime(
     max_opacity=0.8
 ).add_to(m)
 
-# Allow raw HTML for potential interactive elements (use cautiously)
-st.experimental_allow_raw_html(st_folium(m, width=700, height=500))
+st_folium(m, width=700, height=500)
 
 # Show the dataframe if needed
 st.write("Data Preview:")
