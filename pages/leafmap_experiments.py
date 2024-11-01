@@ -68,15 +68,19 @@ else:
         # Aggregate data by NUTS region
         aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].mean().reset_index()
 
-        # Debug: Check the shapes of both DataFrames before merging
-        st.write("Shape of nuts_gdf_levelled:", nuts_gdf_levelled.shape)
-        st.write("Shape of aggregated_data:", aggregated_data.shape)
+        # Debug: Check unique NUTS_IDs before merging
+        st.write("Unique NUTS_IDs in nuts_gdf_levelled:", nuts_gdf_levelled['NUTS_ID'].unique())
+        st.write("Unique NUTS_IDs in aggregated_data:", aggregated_data['NUTS_ID'].unique())
 
         # Merge aggregated data back with NUTS shapefile
         nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
 
         # Check for NaNs after merge
         st.write("Post-merge NaNs in nuts_gdf_levelled:", nuts_gdf_levelled.isna().sum())
+
+        # Handle missing values if necessary
+        if nuts_gdf_levelled[weight].isna().any():
+            nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(0)  # Fill NaNs with 0 or a default value
 
         # Initialize a Leafmap object centered on the data points
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
