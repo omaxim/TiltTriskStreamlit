@@ -61,23 +61,34 @@ else:
     # Spatially join the data with NUTS boundaries
     data_with_nuts = gpd.sjoin(data_gdf, nuts_gdf_levelled, how="left", predicate="within")
 
-    # Aggregate data by NUTS region
-    aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].mean().reset_index()
+    # Check for empty join results
+    if data_with_nuts.empty:
+        st.warning("No spatial join results. Check your NUTS boundaries and input data.")
+    else:
+        # Aggregate data by NUTS region
+        aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].mean().reset_index()
 
-    # Merge aggregated data back with NUTS shapefile
-    nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
+        # Debug: Check the shapes of both DataFrames before merging
+        st.write("Shape of nuts_gdf_levelled:", nuts_gdf_levelled.shape)
+        st.write("Shape of aggregated_data:", aggregated_data.shape)
 
-    # Initialize a Leafmap object centered on the data points
-    m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
+        # Merge aggregated data back with NUTS shapefile
+        nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
 
-    # Add a choropleth layer based on NUTS boundaries
-    m2.add_data(
-        nuts_gdf_levelled,
-        column=weight,
-        cmap="YlOrRd",
-        layer_name="PD Shock Intensity by Region",
-        legend_title="PD Shock Intensity by Region"
-    )
+        # Check for NaNs after merge
+        st.write("Post-merge NaNs in nuts_gdf_levelled:", nuts_gdf_levelled.isna().sum())
 
-    # Display the map in Streamlit
-    m2.to_streamlit(width=700, height=500)
+        # Initialize a Leafmap object centered on the data points
+        m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
+
+        # Add a choropleth layer based on NUTS boundaries
+        m2.add_data(
+            nuts_gdf_levelled,
+            column=weight,
+            cmap="YlOrRd",
+            layer_name="PD Shock Intensity by Region",
+            legend_title="PD Shock Intensity by Region"
+        )
+
+        # Display the map in Streamlit
+        m2.to_streamlit(width=700, height=500)
