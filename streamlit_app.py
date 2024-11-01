@@ -11,7 +11,11 @@ def load_data():
 
 data = load_data()
 
-data_withaddress = data.dropna(subset=['latitude', 'longitude', 'pd_shock'])
+weight = st.selectbox('weight',['net_present_value_baseline', 'net_present_value_shock', 'pd_baseline',
+       'pd_shock', 'net_present_value_difference',
+       'crispy_perc_value_change', 'pd_difference'])
+
+data_withaddress = data.dropna(subset=['latitude', 'longitude', weight])
 # Create the base map
 m = folium.Map(location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom_start=12)
 
