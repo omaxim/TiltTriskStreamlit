@@ -3,7 +3,6 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 from folium.plugins import HeatMapWithTime
-import numpy as np
 
 # Display map in Streamlit
 st.title("Heatmap Over Time by Address")
@@ -49,39 +48,19 @@ heat_data = [
 ]
 
 
-np.random.seed(3141592)
-initial_data = np.random.normal(size=(100, 2)) * np.array([[1, 1]]) + np.array(
-    [[48, 5]]
+# Create the base map
+m = folium.Map(
+    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
+    zoom_start=8
 )
 
-move_data = np.random.normal(size=(100, 2)) * 0.01
-
-dummydata = [(initial_data + move_data * i).tolist() for i in range(100)]
-time_ = 0
-N = len(dummydata)
-itensify_factor = 30
-for time_entry in dummydata:
-    time_ = time_+1
-    for row in time_entry:
-        weight = min(np.random.uniform()*(time_/(N))*itensify_factor, 1)
-        row.append(weight)
-
-m = folium.Map([48.0, 5.0], zoom_start=6)
-
-hm = HeatMapWithTime(data)
-
-hm.add_to(m)
-
-
-## Create the base map
-#m = folium.Map(
-#    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
-#    zoom_start=8
-#)
-#
-## Add a heatmap layer with time support
-#HeatMapWithTime(
-#    heat_data
-#).add_to(m)
+# Add a heatmap layer with time support
+HeatMapWithTime(
+    heat_data
+).add_to(m)
 
 st_folium(m, width=700, height=500)
+
+# Show the dataframe if needed
+st.write("Data Preview:")
+st.dataframe(data_withaddress[['address', 'latitude', 'longitude', weight, 'term']])

@@ -4,3 +4,4 @@ geopy
 folium==0.18.0
 plotly
 numpy
+datetime
