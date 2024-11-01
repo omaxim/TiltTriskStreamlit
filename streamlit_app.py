@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+import folium
+from streamlit_folium import st_folium
+from folium.plugins import HeatMapWithTime
 
 # Load and cache the data
 @st.cache_data
@@ -23,32 +25,34 @@ weight = st.selectbox(
     ]
 )
 
-# Filter data to include only rows with valid latitude, longitude, and selected weight,
-# and create a copy of the resulting DataFrame to avoid SettingWithCopyWarning
+# Filter data to include only rows with valid latitude, longitude, and selected weight
 data_withaddress = data.dropna(subset=['latitude', 'longitude', weight, 'term']).copy()
 
-# Create a Plotly density map with a time slider, using 'term' as a categorical frame
-fig = px.density_mapbox(
-    data_withaddress,
-    lat='latitude',
-    lon='longitude',
-    z=weight,
-    radius=10,
-    hover_name='address',
-    animation_frame='term',
-    animation_group='address',
-    center={"lat": data_withaddress['latitude'].mean(), "lon": data_withaddress['longitude'].mean()},
-    mapbox_style="carto-positron",
-    zoom=12,
-    title="Heatmap Over Time (Term) of " + weight
+# Group data by 'term' and create a list of heatmap data for each time point
+# Each entry in the list corresponds to the data for a particular 'term' time period
+heat_data = [
+    data_withaddress[data_withaddress['term'] == t][['latitude', 'longitude', weight]].values.tolist()
+    for t in sorted(data_withaddress['term'].unique())
+]
+
+# Create the base map
+m = folium.Map(
+    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
+    zoom_start=12
 )
 
-# Set color scale for better visualization
-fig.update_layout(coloraxis_colorbar=dict(title=weight))
+# Add a heatmap layer with time support
+HeatMapWithTime(
+    heat_data,
+    index=sorted(data_withaddress['term'].unique()),  # Sorted terms as time indices
+    radius=10,
+    auto_play=True,
+    max_opacity=0.8
+).add_to(m)
 
-# Display the interactive map with time slider in Streamlit
-st.title("Heatmap Over Time by Address (Term-Based)")
-st.plotly_chart(fig, use_container_width=True)
+# Display map in Streamlit
+st.title("Heatmap Over Time by Address (Using Term)")
+st_folium(m, width=700, height=500)
 
 # Show the dataframe if needed
 st.write("Data Preview:")
