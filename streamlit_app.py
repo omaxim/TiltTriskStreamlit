@@ -43,7 +43,7 @@ sector = st.selectbox('Select the sector',data['ald_sector'].unique())
 data_withaddress = data.loc[
     (data['baseline_scenario'] == baseline_scenario) &
     (data['shock_scenario'] == shock_scenario) &
-    (data['tern'] == term)
+    (data['tern'] == int(term))
 ].dropna(subset=['latitude', 'longitude', 'term',weight]).copy()
 
 NUTS_level = st.slider('NUTS aaggregation level',1,3,3,1)
