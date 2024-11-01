@@ -5,3 +5,5 @@ folium==0.18.0
 plotly
 numpy
 datetime
+geopandas
+shapely
