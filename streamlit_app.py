@@ -60,7 +60,7 @@ HeatMapWithTime(
     heat_data
 ).add_to(m)
 # Add a heatmap layer with time support
-
+st_folium(m)
 #
 ## Show the dataframe if needed
 #st.write("Data Preview:")
