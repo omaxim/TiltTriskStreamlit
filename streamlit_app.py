@@ -23,14 +23,11 @@ weight = st.selectbox(
     ]
 )
 
-# Filter data to only include rows with valid latitude, longitude, and selected weight
-data_withaddress = data.dropna(subset=['latitude', 'longitude', weight, 'term'])
+# Filter data to include only rows with valid latitude, longitude, and selected weight,
+# and create a copy of the resulting DataFrame to avoid SettingWithCopyWarning
+data_withaddress = data.dropna(subset=['latitude', 'longitude', weight, 'term']).copy()
 
-# Convert the 'term' column to a datetime object if not already
-data_withaddress['term'] = pd.to_datetime(data_withaddress['term'], errors='coerce')
-data_withaddress = data_withaddress.dropna(subset=['term'])
-
-# Create a Plotly scatter map with a time slider
+# Create a Plotly density map with a time slider, using 'term' as a categorical frame
 fig = px.density_mapbox(
     data_withaddress,
     lat='latitude',
@@ -43,14 +40,14 @@ fig = px.density_mapbox(
     center={"lat": data_withaddress['latitude'].mean(), "lon": data_withaddress['longitude'].mean()},
     mapbox_style="carto-positron",
     zoom=12,
-    title="Heatmap Over Time of " + weight
+    title="Heatmap Over Time (Term) of " + weight
 )
 
 # Set color scale for better visualization
 fig.update_layout(coloraxis_colorbar=dict(title=weight))
 
 # Display the interactive map with time slider in Streamlit
-st.title("Heatmap Over Time by Address")
+st.title("Heatmap Over Time by Address (Term-Based)")
 st.plotly_chart(fig, use_container_width=True)
 
 # Show the dataframe if needed
