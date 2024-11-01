@@ -71,8 +71,6 @@ else:
         # Merge aggregated data back with NUTS shapefile
         nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
 
-        # Check for NaNs after merge
-        st.write("Post-merge NaNs in nuts_gdf_levelled:", nuts_gdf_levelled.isna().sum())
 
         # Handle missing values if necessary
         if nuts_gdf_levelled[weight].isna().any():
