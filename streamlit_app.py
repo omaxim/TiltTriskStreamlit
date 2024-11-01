@@ -15,11 +15,8 @@ data = load_data()
 weight = st.selectbox(
     'Select Weighting for Heatmap',
     [
-        'net_present_value_baseline', 
-        'net_present_value_shock', 
         'pd_baseline',
-        'pd_shock', 
-        'net_present_value_difference',
+        'pd_shock',
         'crispy_perc_value_change', 
         'pd_difference'
     ]
