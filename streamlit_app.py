@@ -68,7 +68,7 @@ for time_entry in dummydata:
 
 m = folium.Map([48.0, 5.0], zoom_start=6)
 
-hm = folium.plugins.HeatMapWithTime(data)
+hm = HeatMapWithTime(data)
 
 hm.add_to(m)
 
