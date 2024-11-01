@@ -55,11 +55,7 @@ m = folium.Map(
 
 # Add a heatmap layer with time support
 HeatMapWithTime(
-    heat_data,
-    index=sorted(data_withaddress['term'].unique()),  # Sorted terms as time indices
-    radius=10,
-    auto_play=True,
-    max_opacity=0.8
+    heat_data
 ).add_to(m)
 
 st_folium(m, width=700, height=500)
