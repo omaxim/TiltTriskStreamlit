@@ -78,7 +78,3 @@ HeatMapWithTime(
 ).add_to(m)
 
 st_folium(m, width=700, height=500)
-
-# Show the dataframe if needed
-st.write("Data Preview:")
-st.dataframe(data_withaddress[['address', 'latitude', 'longitude', weight, 'term']])
