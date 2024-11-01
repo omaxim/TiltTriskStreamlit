@@ -38,7 +38,7 @@ shock_scenario = st.selectbox('Shock Scenario', valid_shock_scenarios)
 data_withaddress = data.loc[
     (data['baseline_scenario'] == baseline_scenario) &
     (data['shock_scenario'] == shock_scenario)
-].dropna(subset=['latitude', 'longitude', 'term']).copy()
+].dropna(subset=['latitude', 'longitude', 'term',weight]).copy()
 
 # Group data by 'term' and create a list of heatmap data for each time point
 # Each entry in the list corresponds to the data for a particular 'term' time period
