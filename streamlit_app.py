@@ -56,8 +56,11 @@ else:
 
 # Create the base map
 if not data_withaddress.empty:
+    # Center the map based on the first data point
+    initial_location = [heat_data[0][0][0], heat_data[0][0][1]] if heat_data[0] else [data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()]
+
     m = folium.Map(
-        location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
+        location=initial_location, 
         zoom_start=12
     )
 
