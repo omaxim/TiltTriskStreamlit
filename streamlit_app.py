@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import folium
-from streamlit_folium import st_folium
+from streamlit_folium import folium_static
 from folium.plugins import HeatMapWithTime, HeatMap
 
 # Display map in Streamlit
@@ -60,7 +60,7 @@ HeatMapWithTime(
     heat_data
 ).add_to(m)
 # Add a heatmap layer with time support
-st_folium(m)
+folium_static(m)
 #
 ## Show the dataframe if needed
 #st.write("Data Preview:")
