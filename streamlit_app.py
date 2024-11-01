@@ -43,6 +43,8 @@ heat_data = [
     data_withaddress[data_withaddress['term'] == t][['latitude', 'longitude', weight]].values.tolist()
     for t in sorted(data_withaddress['term'].unique())
 ]
+st.write(data_withaddress.head())  # Preview the data to ensure it's correct
+st.write(heat_data)
 
 # Create the base map
 m = folium.Map(
