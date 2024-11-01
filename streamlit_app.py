@@ -37,38 +37,31 @@ data_withaddress = data.loc[
     (data['shock_scenario'] == shock_scenario)
 ].dropna(subset=['latitude', 'longitude', 'term']).copy()
 
-# Preview the filtered data
-st.write(data_withaddress.shape)
-st.write(data_withaddress.head())
-
 # Group data by 'term' and create a list of heatmap data for each time point
+# Each entry in the list corresponds to the data for a particular 'term' time period
 heat_data = [
     data_withaddress[data_withaddress['term'] == t][['latitude', 'longitude', weight]].values.tolist()
     for t in sorted(data_withaddress['term'].unique())
 ]
 
 # Create the base map
-if not data_withaddress.empty:
-    m = folium.Map(
-        location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
-        zoom_start=12
-    )
+m = folium.Map(
+    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
+    zoom_start=12
+)
 
-    # Add a heatmap layer with time support
-    if heat_data:
-        HeatMapWithTime(
-            heat_data,
-            index=sorted(data_withaddress['term'].unique()),
-            radius=10,
-            auto_play=True,
-            max_opacity=0.8
-        ).add_to(m)
+# Add a heatmap layer with time support
+HeatMapWithTime(
+    heat_data,
+    index=sorted(data_withaddress['term'].unique()),  # Sorted terms as time indices
+    radius=10,
+    auto_play=True,
+    max_opacity=0.8
+).add_to(m)
 
-    # Display map in Streamlit
-    st.title("Heatmap Over Time by Address (Using Term)")
-    st_folium(m, width=700, height=500)
-else:
-    st.warning("No data available for the selected scenarios.")
+# Display map in Streamlit
+st.title("Heatmap Over Time by Address (Using Term)")
+st_folium(m, width=700, height=500)
 
 # Show the dataframe if needed
 st.write("Data Preview:")
