@@ -47,9 +47,6 @@ heat_data = [
     for t in sorted(data_withaddress['term'].unique())
 ]
 
-# Check if heat_data is populated
-st.write(heat_data)
-
 # Create the base map
 if not data_withaddress.empty:
     m = folium.Map(
