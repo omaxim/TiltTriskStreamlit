@@ -66,15 +66,22 @@ for time_entry in dummydata:
         weight = min(np.random.uniform()*(time_/(N))*itensify_factor, 1)
         row.append(weight)
 
-# Create the base map
-m = folium.Map(
-    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
-    zoom_start=8
-)
+m = folium.Map([48.0, 5.0], zoom_start=6)
 
-# Add a heatmap layer with time support
-HeatMapWithTime(
-    dummydata#heat_data
-).add_to(m)
+hm = folium.plugins.HeatMapWithTime(data)
+
+hm.add_to(m)
+
+
+## Create the base map
+#m = folium.Map(
+#    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
+#    zoom_start=8
+#)
+#
+## Add a heatmap layer with time support
+#HeatMapWithTime(
+#    heat_data
+#).add_to(m)
 
 st_folium(m, width=700, height=500)
