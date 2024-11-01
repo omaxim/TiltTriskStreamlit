@@ -66,6 +66,7 @@ aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].mean().reset_index()
 
 # Merge the aggregated data back with the NUTS shapefile for mapping
 nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
+nuts_gdf_levelled[weight].fillna(0, inplace=True)  # Fill NaN values in weight column
 
 ## Initialize the base map centered on the data points
 #m = folium.Map(
