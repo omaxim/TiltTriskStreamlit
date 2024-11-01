@@ -77,7 +77,7 @@ else:
             nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(0)  # Fill NaNs with 0 or a default value
 
         # Initialize a Leafmap object centered on the data points
-        m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
+        m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=10)
 
         # Add a choropleth layer based on NUTS boundaries
         m2.add_data(
