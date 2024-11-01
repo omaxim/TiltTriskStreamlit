@@ -3,6 +3,9 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 from folium.plugins import HeatMapWithTime, HeatMap
+import geopandas as gpd
+from shapely.geometry import Point
+nuts_gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
 
 # Display map in Streamlit
 st.title("Heatmap Over Time by Address")
@@ -42,26 +45,45 @@ data_withaddress = data.loc[
     (data['shock_scenario'] == shock_scenario)
 ].dropna(subset=['latitude', 'longitude', 'term',weight]).copy()
 
-# Group data by 'term' and create a list of heatmap data for each time point
-# Each entry in the list corresponds to the data for a particular 'term' time period
-heat_data = [
-    data_withaddress[data_withaddress['term'] == t][['latitude', 'longitude', weight]].values.tolist()
-    for t in sorted(data_withaddress['term'].unique())
-]
+NUTS_level = st.slider('NUTS aaggregation level',1,3,3,1)
+# Load the NUTS shapefile
+nuts_gdf_levelled = nuts_gdf[nuts_gdf['LEVL_CODE'] == 3]
 
 
-# Create the base map
+
+# Convert your data into a GeoDataFrame
+data_withaddress['geometry'] = data_withaddress.apply(lambda row: Point(row['longitude'], row['latitude']), axis=1)
+data_gdf = gpd.GeoDataFrame(data_withaddress, geometry='geometry', crs="EPSG:4326")
+
+# Spatially join the data with the NUTS boundaries
+# This will add the NUTS region information to each data point
+data_with_nuts = gpd.sjoin(data_gdf, nuts_gdf_levelled, how="left", predicate="within")
+
+# Aggregate the `pd_shock` by NUTS region (using the NUTS region identifier, e.g., 'NUTS_ID')
+aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].sum().reset_index()
+
+# Merge the aggregated data back with the NUTS shapefile for mapping
+nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
+
+# Initialize the base map centered on the data points
 m = folium.Map(
-    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
+    location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()],
     zoom_start=8
 )
-## Add a heatmap layer with time support
-HeatMapWithTime(
-    heat_data
+
+# Add a choropleth layer based on the NUTS boundaries
+folium.Choropleth(
+    geo_data=nuts_gdf_levelled,
+    name='choropleth',
+    data=nuts_gdf_levelled,
+    columns=['NUTS_ID', weight],
+    key_on='feature.properties.NUTS_ID',
+    fill_color='YlOrRd',
+    fill_opacity=0.7,
+    line_opacity=0.2,
+    legend_name='PD Shock Intensity by Region'
 ).add_to(m)
-# Add a heatmap layer with time support
-st_folium(m)
-#
-## Show the dataframe if needed
-#st.write("Data Preview:")
-#st.dataframe(data_withaddress[['address', 'latitude', 'longitude', weight, 'term']])
+
+# Add layer control and display the map
+folium.LayerControl().add_to(m)
+st.folium(m)
