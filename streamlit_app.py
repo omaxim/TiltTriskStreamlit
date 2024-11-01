@@ -22,8 +22,9 @@ weight = st.selectbox(
     ]
 )
 
+baseline_scenario = st.selectbox('Baseline Scenario', ['IPR2023_baseline', 'WEO2021_APS'])
 # Filter data to include only rows with valid latitude, longitude, and selected weight
-data_withaddress = data.dropna(subset=['latitude', 'longitude', weight, 'term']).copy()
+data_withaddress = data.loc[data['baseline_scenario']==baseline_scenario].dropna(subset=['latitude', 'longitude', weight, 'term']).copy()
 
 # Group data by 'term' and create a list of heatmap data for each time point
 # Each entry in the list corresponds to the data for a particular 'term' time period
