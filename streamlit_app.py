@@ -33,9 +33,9 @@ valid_shock_scenarios = data.loc[data['baseline_scenario'] == baseline_scenario,
 
 
 # Select shock scenario based on valid options from filtered data
-shock_scenario = st.selectbox('Shock Scenario', data['ald_sector'].unique())
+shock_scenario = st.selectbox('Shock Scenario', valid_shock_scenarios)
 
-sector = st.selectbox('Select the sector')
+sector = st.selectbox('Select the sector',data['ald_sector'].unique())
 # Filter data to include only rows with valid latitude, longitude, and selected weight
 data_withaddress = data.loc[
     (data['baseline_scenario'] == baseline_scenario) &
