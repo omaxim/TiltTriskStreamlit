@@ -30,7 +30,7 @@ weight = st.selectbox(
 
 # Select baseline scenario
 baseline_scenario = st.selectbox('Baseline Scenario', data['baseline_scenario'].unique())
-
+term = st.selectbox('term',data['term'].unique())
 # Filter data based on the selected baseline scenario to get valid shock scenarios
 valid_shock_scenarios = data.loc[data['baseline_scenario'] == baseline_scenario, 'shock_scenario'].unique()
 
@@ -42,12 +42,14 @@ sector = st.selectbox('Select the sector',data['ald_sector'].unique())
 # Filter data to include only rows with valid latitude, longitude, and selected weight
 data_withaddress = data.loc[
     (data['baseline_scenario'] == baseline_scenario) &
-    (data['shock_scenario'] == shock_scenario)
+    (data['shock_scenario'] == shock_scenario) &
+    (data['tern'] == term)
 ].dropna(subset=['latitude', 'longitude', 'term',weight]).copy()
 
 NUTS_level = st.slider('NUTS aaggregation level',1,3,3,1)
+
 # Load the NUTS shapefile
-nuts_gdf_levelled = nuts_gdf[nuts_gdf['LEVL_CODE'] == 3]
+nuts_gdf_levelled = nuts_gdf[nuts_gdf['LEVL_CODE'] == NUTS_level]
 
 
 
