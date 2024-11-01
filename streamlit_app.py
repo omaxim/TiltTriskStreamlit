@@ -89,18 +89,3 @@ folium.Choropleth(
 # Add layer control and display the map
 folium.LayerControl().add_to(m)
 folium_static(m)
-
-## Initialize a leafmap.Map object centered on the data points
-#m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
-#
-## Add a choropleth layer based on the NUTS boundaries
-#m2.add_data(
-#    nuts_gdf_levelled,
-#    column=weight,
-#    cmap="YlOrRd",
-#    layer_name="PD Shock Intensity by Region",
-#    legend_title="PD Shock Intensity by Region"
-#)
-#
-## Display the map in Streamlit
-#m2.to_streamlit(width=700, height=500)
