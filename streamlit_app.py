@@ -47,31 +47,25 @@ heat_data = [
     for t in sorted(data_withaddress['term'].unique())
 ]
 
-# Check if heat_data is populated and show its shape or a sample
-if heat_data:
-    st.write(f"Heat Data Length: {len(heat_data)}")
-    st.write(f"Sample Heat Data for First Time Period: {heat_data[0][:5]}")  # Displaying first 5 entries for the first time period
-else:
-    st.warning("No heat data available for the selected scenarios.")
+# Check if heat_data is populated
+st.write(heat_data)
 
 # Create the base map
 if not data_withaddress.empty:
-    # Center the map based on the first data point
-    initial_location = [heat_data[0][0][0], heat_data[0][0][1]] if heat_data[0] else [data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()]
-
     m = folium.Map(
-        location=initial_location, 
+        location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
         zoom_start=12
     )
 
     # Add a heatmap layer with time support
-    HeatMapWithTime(
-        heat_data,
-        index=sorted(data_withaddress['term'].unique()),
-        radius=10,
-        auto_play=True,
-        max_opacity=0.8
-    ).add_to(m)
+    if heat_data:
+        HeatMapWithTime(
+            heat_data,
+            index=sorted(data_withaddress['term'].unique()),
+            radius=10,
+            auto_play=True,
+            max_opacity=0.8
+        ).add_to(m)
 
     # Display map in Streamlit
     st.title("Heatmap Over Time by Address (Using Term)")
