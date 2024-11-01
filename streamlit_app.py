@@ -46,7 +46,7 @@ data_withaddress = data.loc[
     (data['term'] == int(term))
 ].dropna(subset=['latitude', 'longitude', 'term',weight]).copy()
 
-NUTS_level = st.slider('NUTS aaggregation level',1,3,3,1)
+NUTS_level = st.slider('NUTS aggregation level',1,3,3,1)
 
 # Load the NUTS shapefile
 nuts_gdf_levelled = nuts_gdf[nuts_gdf['LEVL_CODE'] == NUTS_level]
