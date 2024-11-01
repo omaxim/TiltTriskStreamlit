@@ -62,7 +62,7 @@ data_gdf = gpd.GeoDataFrame(data_withaddress, geometry='geometry', crs="EPSG:432
 data_with_nuts = gpd.sjoin(data_gdf, nuts_gdf_levelled, how="left", predicate="within")
 
 # Aggregate the `pd_shock` by NUTS region (using the NUTS region identifier, e.g., 'NUTS_ID')
-aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].sum().reset_index()
+aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].mean().reset_index()
 
 # Merge the aggregated data back with the NUTS shapefile for mapping
 nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
