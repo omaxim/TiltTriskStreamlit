@@ -22,9 +22,20 @@ weight = st.selectbox(
     ]
 )
 
-baseline_scenario = st.selectbox('Baseline Scenario', ['IPR2023_baseline', 'WEO2021_APS'])
+# Select baseline scenario
+baseline_scenario = st.selectbox('Baseline Scenario', data['baseline_scenario'].unique())
+
+# Filter data based on the selected baseline scenario to get valid shock scenarios
+valid_shock_scenarios = data.loc[data['baseline_scenario'] == baseline_scenario, 'shock_scenario'].unique()
+
+# Select shock scenario based on valid options from filtered data
+shock_scenario = st.selectbox('Shock Scenario', valid_shock_scenarios)
+
 # Filter data to include only rows with valid latitude, longitude, and selected weight
-data_withaddress = data.loc[data['baseline_scenario']==baseline_scenario].dropna(subset=['latitude', 'longitude', weight, 'term']).copy()
+data_withaddress = data.loc[
+    (data['baseline_scenario'] == baseline_scenario) &
+    (data['shock_scenario'] == shock_scenario)
+].dropna(subset=['latitude', 'longitude', 'weight', 'term']).copy()
 
 # Group data by 'term' and create a list of heatmap data for each time point
 # Each entry in the list corresponds to the data for a particular 'term' time period
