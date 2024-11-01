@@ -53,17 +53,17 @@ m = folium.Map(
     location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], 
     zoom_start=8
 )
-
+term = st.slider('Year',min_value=2022,max_value=2027,step=1)
 ## Add a heatmap layer with time support
 #HeatMapWithTime(
 #    heat_data
 #).add_to(m)
 # Add a heatmap layer with time support
 HeatMap(
-    heat_data[0]
+    heat_data[term-2021]
 ).add_to(m)
 st_folium(m, width=700, height=500)
-
-# Show the dataframe if needed
-st.write("Data Preview:")
-st.dataframe(data_withaddress[['address', 'latitude', 'longitude', weight, 'term']])
+#
+## Show the dataframe if needed
+#st.write("Data Preview:")
+#st.dataframe(data_withaddress[['address', 'latitude', 'longitude', weight, 'term']])
