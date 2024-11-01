@@ -2,3 +2,4 @@ streamlit_folium
 streamlit
 geopy
 folium
+plotly
