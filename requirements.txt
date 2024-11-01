@@ -8,3 +8,4 @@ datetime
 geopandas
 shapely
 leafmap
+mapclassify
