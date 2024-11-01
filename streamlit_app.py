@@ -70,7 +70,7 @@ nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='
 # Initialize the base map centered on the data points
 m = folium.Map(
     location=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()],
-    zoom_start=8
+    zoom_start=3
 )
 
 # Add a choropleth layer based on the NUTS boundaries
