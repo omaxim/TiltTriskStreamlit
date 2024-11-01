@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import folium
-from streamlit_folium import st_folium
+from streamlit_folium import folium_static
 from folium.plugins import HeatMapWithTime, HeatMap
 import geopandas as gpd
 from shapely.geometry import Point
@@ -86,4 +86,4 @@ folium.Choropleth(
 
 # Add layer control and display the map
 folium.LayerControl().add_to(m)
-st_folium(m)
+folium_static(m)
