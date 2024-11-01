@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
-from folium.plugins import HeatMapWithTime
+from folium.plugins import HeatMapWithTime, HeatMap
 
 # Display map in Streamlit
 st.title("Heatmap Over Time by Address")
@@ -58,7 +58,10 @@ m = folium.Map(
 HeatMapWithTime(
     heat_data
 ).add_to(m)
-
+# Add a heatmap layer with time support
+HeatMap(
+    heat_data[0]
+).add_to(m)
 st_folium(m, width=700, height=500)
 
 # Show the dataframe if needed
