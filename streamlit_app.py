@@ -41,12 +41,12 @@ shock_scenario = st.selectbox('Shock Scenario', valid_shock_scenarios)
 data_withaddress = data.loc[
     (data['baseline_scenario'] == baseline_scenario) &
     (data['shock_scenario'] == shock_scenario)
-].dropna(subset=['latitude', 'longitude', 'term', 'weight']).copy()
+].dropna(subset=['latitude', 'longitude', 'term', weight]).copy()
 
 # Group data by 'term' and create an OrderedDict for heatmap data
 heat_data = OrderedDict()
 for t in sorted(data_withaddress['term'].unique()):
-    term_data = data_withaddress[data_withaddress['term'] == t][['latitude', 'longitude', 'weight']].values.tolist()
+    term_data = data_withaddress[data_withaddress['term'] == t][['latitude', 'longitude', weight]].values.tolist()
     heat_data[t] = term_data  # Add data for each term as a list of [lat, lon, weight] tuples
 
 # Create the base map
