@@ -4,6 +4,9 @@ import folium
 from streamlit_folium import st_folium
 from folium.plugins import HeatMapWithTime
 
+# Display map in Streamlit
+st.title("Heatmap Over Time by Address")
+
 # Load and cache the data
 @st.cache_data
 def load_data():
@@ -59,8 +62,6 @@ HeatMapWithTime(
     max_opacity=0.8
 ).add_to(m)
 
-# Display map in Streamlit
-st.title("Heatmap Over Time by Address (Using Term)")
 st_folium(m, width=700, height=500)
 
 # Show the dataframe if needed
