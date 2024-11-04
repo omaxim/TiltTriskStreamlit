@@ -3,6 +3,7 @@ import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 import leafmap
+import json
 
 # Load the NUTS shapefile
 @st.cache_data
@@ -75,8 +76,9 @@ else:
         if nuts_gdf_levelled[weight].isna().any():
             nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(0)  # Fill NaNs with 0 or a default value
 
-        # Convert the GeoDataFrame to GeoJSON format
-        nuts_geojson = nuts_gdf_levelled.__geo_interface__
+        # Convert the GeoDataFrame to GeoJSON format and check its content
+        nuts_geojson = json.loads(nuts_gdf_levelled.to_json())
+        st.write("GeoJSON data:", nuts_geojson)  # For debugging
 
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
@@ -98,3 +100,4 @@ else:
 
         # Display the map in Streamlit
         m2.to_streamlit(width=700, height=500)
+
