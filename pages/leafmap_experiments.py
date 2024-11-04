@@ -76,9 +76,9 @@ else:
         if nuts_gdf_levelled[weight].isna().any():
             nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(0)  # Fill NaNs with 0 or a default value
 
-        # Convert the GeoDataFrame to GeoJSON format, limiting to the first 10 features for debugging
-        nuts_geojson = json.loads(nuts_gdf_levelled.iloc[:10].to_json())
-        st.write("Sample GeoJSON data (first 10 features):", nuts_geojson)  # Output sample GeoJSON
+        # Convert the first feature of GeoDataFrame to GeoJSON format
+        nuts_geojson = json.loads(nuts_gdf_levelled.iloc[:1].to_json())  # Only the first feature for testing
+        st.write("Sample GeoJSON data (first feature):", nuts_geojson)  # Display only one feature for validation
 
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
