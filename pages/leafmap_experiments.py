@@ -87,8 +87,7 @@ else:
             legend_title="PD Shock Intensity by Region",
             edge_color=None,  # Remove boundary outlines
             edge_width=0,     # Ensure edge width is set to zero
-            fill_opacity=0.7,  # Adjust fill opacity for better visibility
-            zoom=2
+            fill_opacity=0.7  # Adjust fill opacity for better visibility
         )
 
         # Display the map in Streamlit
