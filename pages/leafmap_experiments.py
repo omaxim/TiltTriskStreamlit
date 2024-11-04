@@ -2,8 +2,7 @@ import streamlit as st
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
-import leafmap
-import json
+import leafmap.foliumap as leafmap
 
 # Load the NUTS shapefile
 @st.cache_data
@@ -76,27 +75,20 @@ else:
         if nuts_gdf_levelled[weight].isna().any():
             nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(0)  # Fill NaNs with 0 or a default value
 
-        # Convert the first feature of GeoDataFrame to GeoJSON format
-        nuts_geojson = json.loads(nuts_gdf_levelled.iloc[:1].to_json())  # Only the first feature for testing
-        st.write("Sample GeoJSON data (first feature):", nuts_geojson)  # Display only one feature for validation
-
         # Initialize a Leafmap object centered on the data points with a closer zoom level
-        m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
+        m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=2)
 
-        # Add GeoJSON layer to the map with color mapping
-        m2.add_geojson(
-            nuts_geojson,
+        # Add a choropleth layer based on NUTS boundaries without outlines
+        m2.add_data(
+            nuts_gdf_levelled,
+            column=weight,
+            cmap="YlOrRd",
             layer_name="PD Shock Intensity by Region",
-            style_function=lambda feature: {
-                "fillColor": leafmap.colormap.linear.YlOrRd_09.scale(
-                    nuts_gdf_levelled[weight].min(), nuts_gdf_levelled[weight].max()
-                )(feature['properties'].get(weight, 0)),  # Default to 0 if weight is missing
-                "color": "transparent",
-                "weight": 0,
-                "fillOpacity": 0.7,
-            },
-            info_mode="on_hover",
+            legend_title="PD Shock Intensity by Region",
+            edge_color=None,  # Remove boundary outlines
+            edge_width=0,     # Ensure edge width is set to zero
+            fill_opacity=0.7  # Adjust fill opacity for better visibility
         )
 
         # Display the map in Streamlit
-        m2.to_streamlit(width=700, height=500)
+        m2.to_streamlit(width=700, height=500,add_layer_control=False)
