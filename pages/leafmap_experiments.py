@@ -79,7 +79,7 @@ else:
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
 
         # Add a choropleth layer based on NUTS boundaries without outlines
-        m2.add_data(
+        m2.add_gdf(
             nuts_gdf_levelled,
             column=weight,
             cmap="YlOrRd",
