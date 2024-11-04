@@ -91,4 +91,4 @@ else:
         )
 
         # Display the map in Streamlit
-        m2.to_streamlit(width=700, height=500, zoom=12)
+        m2.to_streamlit(width=700, height=500, zoom=2)
