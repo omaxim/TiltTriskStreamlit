@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
-import leafmap.foliumap as leafmap
+import leafmap
 
 # Load the NUTS shapefile
 @st.cache_data
@@ -79,16 +79,20 @@ else:
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=2)
 
         # Add a choropleth layer based on NUTS boundaries without outlines
-        m2.add_data(
-            nuts_gdf_levelled,
-            column=weight,
-            cmap="YlOrRd",
+        m2.add_geojson(
+            nuts_gdf_levelled.__geo_interface__,
             layer_name="PD Shock Intensity by Region",
-            legend_title="PD Shock Intensity by Region",
-            edge_color=None,  # Remove boundary outlines
-            edge_width=0,     # Ensure edge width is set to zero
-            fill_opacity=0.7  # Adjust fill opacity for better visibility
+            fill_opacity=0.7,
+            style_function=lambda feature: {
+                'fillColor': leafmap.colormap.linear.YlOrRd_09.scale(
+                    nuts_gdf_levelled[weight].min(), nuts_gdf_levelled[weight].max()
+                )(feature['properties'][weight]),
+                'color': None,  # Remove boundary outlines
+                'weight': 0
+            },
+            info_mode="on_hover",
+            tooltip_properties=["NUTS_ID", weight]
         )
 
         # Display the map in Streamlit
-        m2.to_streamlit(width=700, height=500,add_layer_control=False)
+        m2.to_streamlit(width=700, height=500, add_layer_control=False)
