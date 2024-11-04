@@ -75,24 +75,26 @@ else:
         if nuts_gdf_levelled[weight].isna().any():
             nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(0)  # Fill NaNs with 0 or a default value
 
-        # Initialize a Leafmap object centered on the data points with a closer zoom level
-        m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=2)
+        # Convert the GeoDataFrame to GeoJSON format
+        nuts_geojson = nuts_gdf_levelled.__geo_interface__
 
-        # Add a choropleth layer based on NUTS boundaries without outlines
+        # Initialize a Leafmap object centered on the data points with a closer zoom level
+        m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()], zoom=5)
+
+        # Add GeoJSON layer to the map with color mapping
         m2.add_geojson(
-            nuts_gdf_levelled.__geo_interface__,
+            nuts_geojson,
             layer_name="PD Shock Intensity by Region",
-            fill_opacity=0.7,
             style_function=lambda feature: {
-                'fillColor': leafmap.colormap.linear.YlOrRd_09.scale(
+                "fillColor": leafmap.colormap.linear.YlOrRd_09.scale(
                     nuts_gdf_levelled[weight].min(), nuts_gdf_levelled[weight].max()
-                )(feature['properties'][weight]),
-                'color': None,  # Remove boundary outlines
-                'weight': 0
+                )(feature['properties'].get(weight, 0)),  # Default to 0 if weight is missing
+                "color": "transparent",
+                "weight": 0,
+                "fillOpacity": 0.7,
             },
             info_mode="on_hover",
-            tooltip_properties=["NUTS_ID", weight]
         )
 
         # Display the map in Streamlit
-        m2.to_streamlit(width=700, height=500, add_layer_control=False)
+        m2.to_streamlit(width=700, height=500)
