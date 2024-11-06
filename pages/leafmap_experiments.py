@@ -121,7 +121,8 @@ else:
             return {
                 "fillColor": color,       # Color based on the value
                 "fillOpacity": 0.9,       # Adjust fill opacity
-                "weight": 4,              # No outline weight
+                "weight": 0.1,              # No outline weight
+                "stroke": True,         
                 "color": "#000000",       # White border color (if needed)
             }
 
