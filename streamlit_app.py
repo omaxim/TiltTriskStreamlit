@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import folium
-from streamlit_folium import folium_static
+from streamlit_folium import st_folium
 import geopandas as gpd
 from shapely.geometry import Point
 from visualsetup import load_visual_identity
@@ -102,4 +102,4 @@ folium.Choropleth(
 # Add layer control and display the map
 folium.LayerControl().add_to(m)
 with col2:
-    folium_static(m)
+    st_folium(m)
