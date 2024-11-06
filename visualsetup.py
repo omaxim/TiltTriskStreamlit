@@ -78,6 +78,10 @@ def load_visual_identity(header_image_path):
 
     st.markdown("""
     <style>
+        /* Set sidebar background color */
+        [data-testid="stSidebar"] {
+            background-color: #021e51;
+        }
 
         /* Set sidebar text color */
         [data-testid="stSidebar"] * {
