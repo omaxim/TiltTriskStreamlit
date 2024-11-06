@@ -141,11 +141,11 @@ else:
             highlight_function=highlight_function,  # Apply the highlight function on hover
             fields=[weight,'NAME_LATN'],
             tooltip={
-            "fields"=[weight, 'NAME_LATN'],
-            "aliases"=["Weight (%)", "Region"],
-            "style"=("background-color: white; color: black; font-weight: bold;"),
-            "sticky"=True,
-            "formatters"={
+            "fields":[weight, 'NAME_LATN'],
+            "aliases":["Weight (%)", "Region"],
+            "style":("background-color: white; color: black; font-weight: bold;"),
+            "sticky":True,
+            "formatters":{
                 "weight": lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
             }}
             )
