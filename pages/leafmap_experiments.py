@@ -95,9 +95,6 @@ else:
         m2.add_data(
             nuts_gdf_levelled,
             column=weight,
-            vmin=0,
-            vmax=0.2,
-            cmap="YlOrRd",
             layer_name="PD Shock Intensity by Region",
             legend_kwds={"fmt": "{:.2%}"},
             legend_title="PD Shock Intensity by Region",
@@ -105,6 +102,7 @@ else:
             edge_width=0,     # Ensure edge width is set to zero
             fill_opacity=0.7  # Adjust fill opacity for better visibility
         )
+        m2.add_colorbar(colors='YlOrRd',vmin=0,vmax=0.2)
 
         # Display the map in Streamlit
         with col2:
