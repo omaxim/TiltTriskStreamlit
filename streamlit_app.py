@@ -26,7 +26,7 @@ def load_data():
     return pd.read_feather('tiltrisk_geocoded.feather')
 
 data = load_data()
-colx,col1,sepcol,col2,coly = st.columns([1,3,1,3,1])
+colx,col1,sepcol,col2,coly = st.columns([1,4,1,4,1])
 col1.title("SME T-risk")
 col2.title("")
 
