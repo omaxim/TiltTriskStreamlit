@@ -93,17 +93,19 @@ else:
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
 
         # Add a choropleth layer based on NUTS boundaries without outlines
-        m2.add_data(
-            nuts_gdf_levelled,
-            column=weight,
-            layer_name=weight,
-            legend_kwds={"fmt": "{:.2%}"},
-            edge_color=None,  # Remove boundary outlines
-            edge_width=0,     # Ensure edge width is set to zero
-            fill_opacity=0.7,  # Adjust fill opacity for better visibility
-            vmin=0,            # Set the minimum value for color mapping
-            vmax=0.2,            # Set the maximum value for color mapping
-        )
+        #m2.add_data(
+        #    nuts_gdf_levelled,
+        #    column=weight,
+        #    layer_name=weight,
+        #    legend_kwds={"fmt": "{:.2%}"},
+        #    edge_color=None,  # Remove boundary outlines
+        #    edge_width=0,     # Ensure edge width is set to zero
+        #    fill_opacity=0.7,  # Adjust fill opacity for better visibility
+        #    vmin=0,            # Set the minimum value for color mapping
+        #    vmax=0.2,            # Set the maximum value for color mapping
+        #)
+        m2.add_gdf(nuts_gdf_levelled,
+                   layer_name=weight)
 
         # Display the map in Streamlit
         with col2:
