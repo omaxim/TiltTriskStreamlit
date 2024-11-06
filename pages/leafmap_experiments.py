@@ -18,8 +18,9 @@ def load_nuts_data():
 
 nuts_gdf = load_nuts_data()
 
-# Display title
-st.title("Heatmap Over Time by Address")
+colx,col1,sepcol,col2,coly = st.columns([1,3,1,3,1])
+col1.title("SME geographic T-risk")
+col2.title("")
 
 # Load and cache the data
 @st.cache_data
@@ -29,21 +30,21 @@ def load_data():
 data = load_data()
 
 # Selection for weight column to visualize
-weight = st.selectbox(
+weight = col1.selectbox(
     'Select Weighting for Heatmap',
     ['pd_baseline', 'pd_shock', 'crispy_perc_value_change', 'pd_difference']
 )
 
 # Select baseline scenario and filter data
-baseline_scenario = st.selectbox('Baseline Scenario', data['baseline_scenario'].unique())
-term = st.selectbox('Term', data['term'].unique())
+baseline_scenario = col1.selectbox('Baseline Scenario', data['baseline_scenario'].unique())
+term = col1.selectbox('Term', data['term'].unique())
 
 # Filter valid shock scenarios based on baseline scenario selection
 valid_shock_scenarios = data[data['baseline_scenario'] == baseline_scenario]['shock_scenario'].unique()
-shock_scenario = st.selectbox('Shock Scenario', valid_shock_scenarios)
+shock_scenario = col1.selectbox('Shock Scenario', valid_shock_scenarios)
 
 # Select sector
-sector = st.selectbox('Select the Sector', data['ald_sector'].unique())
+sector = col1.selectbox('Select the Sector', data['ald_sector'].unique())
 
 # Filter data based on selections
 data_withaddress = data.loc[
@@ -54,9 +55,9 @@ data_withaddress = data.loc[
 
 # Check if filtered data is empty
 if data_withaddress.empty:
-    st.warning("No data available for the selected criteria.")
+    col1.warning("No data available for the selected criteria.")
 else:
-    NUTS_level = st.slider('Regional Aggregation Level', 1, 3, 3, 1)
+    NUTS_level = col1.slider('Regional Aggregation Level', 1, 3, 3, 1)
 
     # Filter NUTS boundaries based on level
     nuts_gdf_levelled = nuts_gdf[nuts_gdf['LEVL_CODE'] == NUTS_level]
@@ -70,7 +71,7 @@ else:
 
     # Check for empty join results
     if data_with_nuts.empty:
-        st.warning("No spatial join results. Check your NUTS boundaries and input data.")
+        col1.warning("No spatial join results. Check your NUTS boundaries and input data.")
     else:
         # Aggregate data by NUTS region
         aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].mean().reset_index()
@@ -98,4 +99,5 @@ else:
         )
 
         # Display the map in Streamlit
-        m2.to_streamlit(width=700, height=500,add_layer_control=False)
+        with col2:
+            m2.to_streamlit(width=700, height=500,add_layer_control=False)
