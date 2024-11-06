@@ -147,7 +147,7 @@ else:
             "sticky"=True,
             "formatters"={
                 "weight": lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
-            }
+            }}
             )
         
 
