@@ -19,7 +19,7 @@ def get_colormap(cmap_name = 'YlOrBr',vmin = 0,vmax = 0.2,num_colors = 10,invert
         return colormap
     else:
         colormap = branca.colormap.LinearColormap(
-        colors=colors.reverse(),
+        colors=colors,
         vmin=vmin,
         vmax=vmax)   
         return colormap
@@ -121,7 +121,6 @@ else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20,invert=True)
         else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20)
-        st.text(colormap)
         def style_function(feature):
             # Get the value from the `weight` column for the feature
             value = feature["properties"].get(weight)  # Adjust "weight" as per your actual column name
