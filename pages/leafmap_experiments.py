@@ -109,7 +109,7 @@ else:
         # Define the style_function to dynamically apply color based on the `weight` column
         # Define the colormap manually (from light to dark)
 
-        colormap = get_colormap(vmin=data[weight].min(),vmax=data[weight].max())
+        colormap = get_colormap(vmin=data[weight].min(),vmax=data[weight].max(),num_colors=5)
 
         def style_function(feature):
             # Get the value from the `weight` column for the feature
