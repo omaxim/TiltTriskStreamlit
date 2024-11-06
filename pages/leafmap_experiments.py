@@ -20,6 +20,7 @@ def get_colormap(cmap_name = 'YlOrBr',vmin = 0,vmax = 0.2,num_colors = 10,invert
         vmin=vmin,
         vmax=vmax
     )
+    print(colors)
     return colormap
 
 
