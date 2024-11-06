@@ -4,7 +4,7 @@ import geopandas as gpd
 from shapely.geometry import Point
 import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
-from branca.colormap import linear
+from branca.colormap import LinearColormap
 
 
 st.set_page_config(
@@ -76,7 +76,7 @@ else:
 
     # Spatially join the data with NUTS boundaries
     data_with_nuts = gpd.sjoin(data_gdf, nuts_gdf_levelled, how="left", predicate="within")
-    colormap = linear.YlOrRd.scale(0, 0.2)
+    colormap = LinearColormap(colors=['#ffffcc', '#ffcc99', '#ff9966', '#ff6600', '#cc3300'], vmin=vmin, vmax=vmax)
 
     # Check for empty join results
     if data_with_nuts.empty:
