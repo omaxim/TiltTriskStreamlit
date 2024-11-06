@@ -13,7 +13,7 @@ st.set_page_config(
 )
 load_visual_identity('header.png')
 
-st.logo(image='TheiaLogo.svg',icon_image='logo.png',size='large')
+st.logo(icon_image='TheiaLogo.svg',image='logo.png',size='large')
 
 nuts_gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
 # Display map in Streamlit
