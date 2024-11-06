@@ -96,9 +96,8 @@ else:
         m2.add_data(
             nuts_gdf_levelled,
             column=weight,
-            layer_name="PD Shock Intensity by Region",
+            layer_name=weight,
             legend_kwds={"fmt": "{:.2%}"},
-            legend_title="PD Shock Intensity by Region",
             edge_color=None,  # Remove boundary outlines
             edge_width=0,     # Ensure edge width is set to zero
             fill_opacity=0.7,  # Adjust fill opacity for better visibility
