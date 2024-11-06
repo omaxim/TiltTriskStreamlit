@@ -16,7 +16,6 @@ load_visual_identity('header.jpg')
 st.logo(image='TheiaLogo.svg',icon_image='logo.png',size='large')
 
 nuts_gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
-
 # Display map in Streamlit
 st.title("Heatmap Over Time by Address")
 
@@ -38,17 +37,18 @@ weight = st.selectbox(
     ]
 )
 
+col1,col2 = st.columns(2)
 # Select baseline scenario
-baseline_scenario = st.selectbox('Baseline Scenario', data['baseline_scenario'].unique())
-term = st.selectbox('term',data['term'].unique())
+baseline_scenario = col1.selectbox('Baseline Scenario', data['baseline_scenario'].unique())
+term = col1.selectbox('term',data['term'].unique())
 # Filter data based on the selected baseline scenario to get valid shock scenarios
 valid_shock_scenarios = data.loc[data['baseline_scenario'] == baseline_scenario, 'shock_scenario'].unique()
 
 
 # Select shock scenario based on valid options from filtered data
-shock_scenario = st.selectbox('Shock Scenario', valid_shock_scenarios)
+shock_scenario = col1.selectbox('Shock Scenario', valid_shock_scenarios)
 
-sector = st.selectbox('Select the sector',data['ald_sector'].unique())
+sector = col1.selectbox('Select the sector',data['ald_sector'].unique())
 # Filter data to include only rows with valid latitude, longitude, and selected weight
 data_withaddress = data.loc[
     (data['baseline_scenario'] == baseline_scenario) &
@@ -56,7 +56,7 @@ data_withaddress = data.loc[
     (data['term'] == int(term))
 ].dropna(subset=['latitude', 'longitude', 'term',weight]).copy()
 
-NUTS_level = st.slider('Regional Aggregation Level',1,3,3,1)
+NUTS_level = col1.slider('Regional Aggregation Level',1,3,3,1)
 
 # Load the NUTS shapefile
 nuts_gdf_levelled = nuts_gdf[nuts_gdf['LEVL_CODE'] == NUTS_level]
@@ -98,4 +98,5 @@ folium.Choropleth(
 
 # Add layer control and display the map
 folium.LayerControl().add_to(m)
-folium_static(m)
+with col2:
+    folium_static(m)
