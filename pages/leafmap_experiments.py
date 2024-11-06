@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
-import folium
 import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
 
@@ -141,13 +140,13 @@ else:
             style_function=style_function,       # Apply the style function
             highlight_function=highlight_function,  # Apply the highlight function on hover
             fields=[weight,'NAME_LATN'],
-            tooltip=folium.features.GeoJsonTooltip(
-            fields=[weight, 'NAME_LATN'],
-            aliases=["Weight (%)", "Region"],
-            style=("background-color: white; color: black; font-weight: bold;"),
-            sticky=True,
-            formatters={
-                weight: lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
+            tooltip={
+            "fields"=[weight, 'NAME_LATN'],
+            "aliases"=["Weight (%)", "Region"],
+            "style"=("background-color: white; color: black; font-weight: bold;"),
+            "sticky"=True,
+            "formatters"={
+                "weight": lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
             }
             )
         )
