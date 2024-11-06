@@ -109,8 +109,8 @@ else:
         # Define the style_function to dynamically apply color based on the `weight` column
         # Define the colormap manually (from light to dark)
 
-        colormap = get_colormap(vmin=nuts_gdf[weight].min(),vmax=nuts_gdf[weight].max())
-        
+        colormap = get_colormap(vmin=data[weight].min(),vmax=data[weight].max())
+
         def style_function(feature):
             # Get the value from the `weight` column for the feature
             value = feature["properties"].get(weight)  # Adjust "weight" as per your actual column name
