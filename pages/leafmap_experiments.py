@@ -7,20 +7,17 @@ from visualsetup import load_visual_identity
 import branca
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-# Parameters for the colormap
-cmap_name = 'YlOrRd'  # Example colormap name
-vmin = 0              # Minimum value for the colormap
-vmax = 0.2              # Maximum value for the colormap
-num_colors = 10        # Number of colors to sample
-# Generate colors from the selected cmap name
-cmap = plt.get_cmap(cmap_name)
-colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)]
-# Create a linear colormap in branca
-colormap = branca.colormap.LinearColormap(
-    colors=colors,
-    vmin=vmin,
-    vmax=vmax
-)
+
+def get_colormap(cmap_name = 'YlOrRd',vmin = 0,vmax = 0.2,num_colors = 10):
+    cmap = plt.get_cmap(cmap_name)
+    colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)]
+    # Create a linear colormap in branca
+    colormap = branca.colormap.LinearColormap(
+        colors=colors,
+        vmin=vmin,
+        vmax=vmax
+    )
+    return colormap
 
 
 st.set_page_config(
@@ -112,7 +109,8 @@ else:
         # Define the style_function to dynamically apply color based on the `weight` column
         # Define the colormap manually (from light to dark)
 
-
+        colormap = get_colormap(vmin=nuts_gdf[weight].min(),vmax=nuts_gdf[weight].max())
+        
         def style_function(feature):
             # Get the value from the `weight` column for the feature
             value = feature["properties"].get(weight)  # Adjust "weight" as per your actual column name
