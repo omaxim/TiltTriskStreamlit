@@ -29,6 +29,7 @@ def load_data():
 data = load_data()
 colx,col1,col2,coly = st.columns([1,3,3,1])
 col1.title("SME geographic T-risk")
+col2.title("")
 
 # Selection for weight column to visualize
 weight = col1.selectbox(
