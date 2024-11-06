@@ -16,7 +16,9 @@ st.logo(icon_image='TheiaLogo.svg',image='logo.png',size='large')
 # Load the NUTS shapefile
 @st.cache_data
 def load_nuts_data():
-    return gpd.read_file("NUTS_RG_60M_2024_4326.shp")
+    gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
+    gdf_country = gdf[gdf['CNTR_CODE'] in ['FR','DE','ES']]
+    return gdf_country
 
 nuts_gdf = load_nuts_data()
 st.title("")
