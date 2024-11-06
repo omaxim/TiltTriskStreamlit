@@ -149,7 +149,7 @@ else:
                 "weight": lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
             }
             )
-        )
+        
 
         # Display the map in Streamlit
         with col2:
