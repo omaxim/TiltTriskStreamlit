@@ -16,9 +16,9 @@ st.logo(icon_image='TheiaLogo.svg',image='logo.png',size='large')
 # Load the NUTS shapefile
 @st.cache_data
 def load_nuts_data():
-    gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
+    gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp").loc[~gdf['NUTS_ID'].isin(['FRY1','FRY2','FRY3','FRY4','FRY5'])] #Remove french colonies from the map
     gdf_country = gdf[gdf['CNTR_CODE'].isin(['FR','DE'])].drop(['NUTS_NAME','COAST_TYPE','URBN_TYPE','MOUNT_TYPE'],axis=1)
-    return gdf_country.loc[~gdf_country['NUTS_ID'].isin(['FRY1','FRY2','FRY3','FRY4','FRY5'])] #Remove french colonies from the map
+    return gdf_country
 
 nuts_gdf = load_nuts_data()
 st.title("")
