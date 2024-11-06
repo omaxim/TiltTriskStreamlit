@@ -98,7 +98,7 @@ else:
         # Define the colors for the color scale manually
         colors = ['#ffffcc', '#ffcc99', '#ff9966', '#ff6600', '#cc3300']  # Yellow-Orange-Red
         # Add the colorbar to the map with the fixed range
-        m2.add_colorbar(
+        m2.add_colormap(
             colors=colors,        # List of colors
             vmin=vmin,            # Set the minimum value for color mapping
             vmax=vmax,            # Set the maximum value for color mapping
