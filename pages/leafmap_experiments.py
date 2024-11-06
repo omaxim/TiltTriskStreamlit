@@ -10,7 +10,7 @@ import matplotlib.colors as mcolors
 # Parameters for the colormap
 cmap_name = 'YlOrRd'  # Example colormap name
 vmin = 0              # Minimum value for the colormap
-vmax = 1              # Maximum value for the colormap
+vmax = 0.2              # Maximum value for the colormap
 num_colors = 10        # Number of colors to sample
 # Generate colors from the selected cmap name
 cmap = plt.get_cmap(cmap_name)
