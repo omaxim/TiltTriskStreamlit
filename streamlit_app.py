@@ -7,7 +7,7 @@ from shapely.geometry import Point
 from visualsetup import load_visual_identity
 
 st.set_page_config(
-    page_title="SME trisk model",
+    page_title="SME T-risk",
     page_icon="logo.png",
     layout="wide"
 )
@@ -27,7 +27,7 @@ def load_data():
 
 data = load_data()
 colx,col1,sepcol,col2,coly = st.columns([1,3,1,3,1])
-col1.title("SME geographic T-risk")
+col1.title("SME T-risk")
 col2.title("")
 
 # Selection for weight column to visualize
