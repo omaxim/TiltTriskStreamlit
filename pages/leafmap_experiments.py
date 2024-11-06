@@ -115,7 +115,7 @@ else:
         vmin = data[weight].min()
         vmax=0.5*data[weight].max()
         if vmin<=0:
-            colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20,reverse=True)
+            colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20,invert=True)
         else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20)
         def style_function(feature):
