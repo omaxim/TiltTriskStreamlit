@@ -117,8 +117,8 @@ else:
                 "fillColor": color,       # Color based on the value
                 "fillOpacity": 0.9,       # Adjust fill opacity
                 "weight": 0,              # No outline weight
-                "stroke": True,          # No stroke (outline)
-                "color": "#ffffff",       # White border color (if needed)
+                "stroke": True,         
+                "color": "#000000",       # White border color (if needed)
             }
 
         # Define the highlight_function to change the style when a feature is highlighted (hovered)
