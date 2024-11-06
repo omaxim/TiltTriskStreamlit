@@ -108,9 +108,12 @@ else:
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
         # Define the style_function to dynamically apply color based on the `weight` column
         # Define the colormap manually (from light to dark)
-
-        colormap = get_colormap(vmin=data[weight].min(),vmax=0.5*data[weight].max(),num_colors=20)
-
+        vmin = data[weight].min()
+        vmax=0.5*data[weight].max()
+        if vmin<=0:
+            colormap = get_colormap(vmin=vmax,vmax=vmin,num_colors=20)
+        else:
+            colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20)
         def style_function(feature):
             # Get the value from the `weight` column for the feature
             value = feature["properties"].get(weight)  # Adjust "weight" as per your actual column name
