@@ -11,7 +11,7 @@ st.set_page_config(
     page_icon="logo.png",
     layout="wide"
 )
-load_visual_identity('header.jpg')
+load_visual_identity('header.png')
 
 st.logo(image='TheiaLogo.svg',icon_image='logo.png',size='large')
 
