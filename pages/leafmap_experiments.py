@@ -114,7 +114,7 @@ else:
 
             # Ensure the colormap is properly scaled to the data range
             vmin = 0
-            vmax = aggregated_data[weight].max()  # Adjust for your actual GeoJSON structure
+            vmax = 0.2#aggregated_data[weight].max()  # Adjust for your actual GeoJSON structure
 
             # Map the value to a color
             color = get_color_for_value(value, vmin, vmax)
