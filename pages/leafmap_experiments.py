@@ -91,21 +91,57 @@ else:
         nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight]#.map('{:.2%}'.format)
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
+        # Define the style_function to dynamically apply color based on the `weight` column
+        # Define the colormap manually (from light to dark)
+        colormap = [
+            "#ffffcc", "#ffcc99", "#ff9966", "#ff6600", "#cc3300"
+        ]
+        def style_function(feature):
+            # Get the value from the `weight` column for the feature
+            value = feature["properties"].get(weight, 0)  # Adjust "weight" as per your actual column name
+
+            # Map the value to a color based on the predefined colormap
+            if value <= 0.05:
+                color = colormap[0]
+            elif value <= 0.1:
+                color = colormap[1]
+            elif value <= 0.15:
+                color = colormap[2]
+            elif value <= 0.2:
+                color = colormap[3]
+            else:
+                color = colormap[4]
+
+            # Return the style for the feature
+            return {
+                "fillColor": color,       # Color based on the value
+                "fillOpacity": 0.7,       # Adjust fill opacity
+                "weight": 0,              # No outline weight
+                "stroke": False,          # No stroke (outline)
+                "color": "#ffffff",       # White border color (if needed)
+            }
+
+        # Define the highlight_function to change the style when a feature is highlighted (hovered)
+        def highlight_function(feature):
+            return {
+                "fillOpacity": 0.9,       # Slightly increase opacity on hover
+                "weight": 2,              # Thicker border on hover
+                "stroke": True,           # Add stroke on hover
+                "color": "#ff0000",       # Red border on hover
+            }
 
         # Add a choropleth layer based on NUTS boundaries without outlines
-        #m2.add_data(
-        #    nuts_gdf_levelled,
-        #    column=weight,
-        #    layer_name=weight,
-        #    legend_kwds={"fmt": "{:.2%}"},
-        #    edge_color=None,  # Remove boundary outlines
-        #    edge_width=0,     # Ensure edge width is set to zero
-        #    fill_opacity=0.7,  # Adjust fill opacity for better visibility
-        #    vmin=0,            # Set the minimum value for color mapping
-        #    vmax=0.2,            # Set the maximum value for color mapping
-        #)
-        m2.add_gdf(nuts_gdf_levelled,
-                   layer_name=weight)
+        m2.add_data(
+            nuts_gdf_levelled,
+            column=weight,
+            layer_name=weight,
+            legend_kwds={"fmt": "{:.2%}"},
+            edge_color=None,  # Remove boundary outlines
+            edge_width=0,     # Ensure edge width is set to zero
+            fill_opacity=0.7,  # Adjust fill opacity for better visibility
+            style_function=style_function,       # Apply the style function
+            highlight_function=highlight_function,  # Apply the highlight function on hover
+        )
 
         # Display the map in Streamlit
         with col2:
