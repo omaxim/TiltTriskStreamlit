@@ -6,6 +6,11 @@ import geopandas as gpd
 from shapely.geometry import Point
 import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
+st.set_page_config(
+    page_title="SME trisk model",
+    page_icon="logo.png",
+    layout="wide"
+)
 load_visual_identity('header.jpg')
 st.logo('logo.png',size='large')
 nuts_gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
