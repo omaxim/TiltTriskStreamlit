@@ -9,5 +9,4 @@ geopandas
 shapely
 leafmap
 mapclassify
-fiona
-branca
+numpy
