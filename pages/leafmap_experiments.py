@@ -135,6 +135,7 @@ else:
             nuts_gdf_levelled,
             column=weight,
             layer_name=weight,
+            add_legend=False,
             legend_kwds={"fmt": "{:.2%}"},
             edge_color=None,  # Remove boundary outlines
             edge_width=0,     # Ensure edge width is set to zero
