@@ -8,9 +8,13 @@ import branca
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
-def get_colormap(cmap_name = 'YlOrBr',vmin = 0,vmax = 0.2,num_colors = 10):
+def get_colormap(cmap_name = 'YlOrBr',vmin = 0,vmax = 0.2,num_colors = 10,invert=False):
     cmap = plt.get_cmap(cmap_name)
     colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)]
+    if invert:
+        colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)].reverse()
+    else:
+        colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)]
     # Create a linear colormap in branca
     colormap = branca.colormap.LinearColormap(
         colors=colors,
@@ -111,7 +115,7 @@ else:
         vmin = data[weight].min()
         vmax=0.5*data[weight].max()
         if vmin<=0:
-            colormap = get_colormap(vmin=vmax,vmax=vmin,num_colors=20)
+            colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20,reverse=True)
         else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20)
         def style_function(feature):
