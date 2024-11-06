@@ -100,7 +100,6 @@ else:
             palette='YlOrRd',        # List of colors
             vmin=vmin,            # Set the minimum value for color mapping
             vmax=vmax,            # Set the maximum value for color mapping
-            step=5                # Define the number of steps (optional)
         )
 
         # Add a choropleth layer based on NUTS boundaries without outlines
