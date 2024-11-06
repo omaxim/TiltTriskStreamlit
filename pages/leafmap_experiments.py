@@ -8,7 +8,7 @@ import branca
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
-def get_colormap(cmap_name = 'YlOrRd',vmin = 0,vmax = 0.2,num_colors = 10):
+def get_colormap(cmap_name = 'YlOrBr',vmin = 0,vmax = 0.2,num_colors = 10):
     cmap = plt.get_cmap(cmap_name)
     colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)]
     # Create a linear colormap in branca
