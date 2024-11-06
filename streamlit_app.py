@@ -28,7 +28,7 @@ def load_data():
     return pd.read_feather('tiltrisk_geocoded.feather')
 
 data = load_data()
-col1,col2 = st.columns(2)
+colx,col1,col2,coly = st.columns([1,3,3,1])
 
 # Selection for weight column to visualize
 weight = col1.selectbox(
