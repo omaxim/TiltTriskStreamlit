@@ -130,11 +130,14 @@ else:
 
         # Define the highlight function to change the style when a feature is highlighted (hovered)
         def highlight_function(feature):
+            # Create a popup content string to show only the weight and NAME_LATN columns
+            popup_content = f"<b>Weight:</b> {weight}<br><b>NAME_LATN:</b> {weight}"
             return {
                 "fillOpacity": 0.9,       # Slightly increase opacity on hover
                 "weight": 2,              # Thicker border on hover
                 "stroke": True,           # Add stroke on hover
                 "color": "#ff0000",       # Red border on hover
+                "popup": popup_content    # Show the popup with the desired columns
             }
 
         # Add a choropleth layer based on NUTS boundaries without outlines
