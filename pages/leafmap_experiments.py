@@ -99,7 +99,7 @@ else:
             "#ffffcc", "#ffcc99", "#ff9966", "#ff6600", "#cc3300"
         ]
         # Create a linear color map using branca
-        colormap = branca.colormap.LinearColormap(
+        colormap = branca.colormap.StepColormap(
             colors=["white","red"],
             vmin=0,
             vmax=0.2
