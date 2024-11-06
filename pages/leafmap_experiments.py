@@ -155,8 +155,7 @@ else:
             fill_opacity=0.7,  # Adjust fill opacity for better visibility
             style_function=style_function,       # Apply the style function
             highlight_function=highlight_function,  # Apply the highlight function on hover
-            fields=[weight,'NAME_LATN'],
-            aliases=["Weight (%)", "Region"],
+            fields=['pd_shock','pd_baseline','crispy_perc_value_change','pd_difference','NAME_LATN'],
             style=("background-color: white; color: black; font-weight: bold;"),
             #formatters={
             #    weight: lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
