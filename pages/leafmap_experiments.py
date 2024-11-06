@@ -8,22 +8,22 @@ import branca
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
-def get_colormap(cmap_name = 'YlOrBr',vmin = 0,vmax = 0.2,num_colors = 10,invert=False):
+def get_colormap(cmap_name='YlOrBr', vmin=0, vmax=0.2, num_colors=10, invert=False):
+    # Generate the colormap
     cmap = plt.get_cmap(cmap_name)
     colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)]
+    
+    # If invert is True, reverse the color list
     if invert:
-        colormap = branca.colormap.LinearColormap(
-        colors=colors.reverse(),
-        vmin=vmin,
-        vmax=vmax)   
-        return colormap
-    else:
-        colormap = branca.colormap.LinearColormap(
+        colors = colors[::-1]
+    
+    # Create the LinearColormap
+    colormap = branca.colormap.LinearColormap(
         colors=colors,
         vmin=vmin,
-        vmax=vmax)   
-        return colormap
-
+        vmax=vmax
+    )
+    return colormap
     
 
 
