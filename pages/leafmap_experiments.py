@@ -121,6 +121,7 @@ else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20,invert=True)
         else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20)
+        st.text(colormap)
         def style_function(feature):
             # Get the value from the `weight` column for the feature
             value = feature["properties"].get(weight)  # Adjust "weight" as per your actual column name
