@@ -98,7 +98,7 @@ else:
         ]
         def style_function(feature):
             # Get the value from the `weight` column for the feature
-            value = feature["properties"].get(weight, 0)  # Adjust "weight" as per your actual column name
+            value = feature[weight]
 
             # Map the value to a color based on the predefined colormap
             if value <= 0.05:
