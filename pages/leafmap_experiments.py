@@ -130,8 +130,12 @@ else:
 
         # Define the highlight function to change the style when a feature is highlighted (hovered)
         def highlight_function(feature):
+            # Get the 'weight' and 'NAME_LATN' values from the feature properties
+            weight_value = feature["properties"].get(weight)
+            name_latn = feature["properties"].get("NAME_LATN")  # Adjust if necessary
+
             # Create a popup content string to show only the weight and NAME_LATN columns
-            popup_content = f"<b>Weight:</b> {weight}<br><b>NAME_LATN:</b> {weight}"
+            popup_content = f"<b>Weight:</b> {weight_value}<br><b>NAME_LATN:</b> {name_latn}"
             return {
                 "fillOpacity": 0.9,       # Slightly increase opacity on hover
                 "weight": 2,              # Thicker border on hover
