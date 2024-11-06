@@ -4,6 +4,8 @@ import geopandas as gpd
 from shapely.geometry import Point
 import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
+import branca
+
 
 st.set_page_config(
     page_title="SME T-risk",
@@ -96,21 +98,18 @@ else:
         colormap = [
             "#ffffcc", "#ffcc99", "#ff9966", "#ff6600", "#cc3300"
         ]
+        # Create a linear color map using branca
+        colormap = branca.colormap.LinearColormap(
+            colors=["#ffffcc", "#ffcc99", "#ff9966", "#ff6600", "#cc3300"],
+            vmin=0,
+            vmax=0.2
+        )
+
         def style_function(feature):
             # Get the value from the `weight` column for the feature
             value = feature["properties"].get(weight)  # Adjust "weight" as per your actual column name
 
-            # Map the value to a color based on the predefined colormap
-            if value <= 0.05:
-                color = colormap[0]
-            elif value <= 0.10:
-                color = colormap[1]
-            elif value <= 0.15:
-                color = colormap[2]
-            elif value <= 0.20:
-                color = colormap[3]
-            else:
-                color = colormap[4]
+            color = colormap(value) if value is not None else "#8c8c8c"  # Default color if None
 
             # Return the style for the feature
             return {
