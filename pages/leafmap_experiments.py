@@ -76,7 +76,7 @@ else:
 
     # Spatially join the data with NUTS boundaries
     data_with_nuts = gpd.sjoin(data_gdf, nuts_gdf_levelled, how="left", predicate="within")
-    colormap = LinearColormap(colors='viridis_r', vmin=0, vmax=0.2)
+    colormap = LinearColormap(colors=['#ffffcc', '#ffcc99', '#ff9966', '#ff6600', '#cc3300'], vmin=0, vmax=0.2)
 
     # Check for empty join results
     if data_with_nuts.empty:
@@ -101,7 +101,7 @@ else:
             column=weight,
             vmin=0,
             vmax=0.2,
-            cmap=colormap,
+            cmap=colormap.to_step(n=5),
             layer_name="PD Shock Intensity by Region",
             legend_kwds={"fmt": "{:.2%}"},
             legend_title="PD Shock Intensity by Region",
