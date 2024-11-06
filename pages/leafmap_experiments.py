@@ -6,7 +6,7 @@ import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
 
 st.set_page_config(
-    page_title="SME trisk model",
+    page_title="SME T-risk",
     page_icon="logo.png",
     layout="wide"
 )
