@@ -4,7 +4,6 @@ import folium
 from streamlit_folium import folium_static
 import geopandas as gpd
 from shapely.geometry import Point
-import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
 
 st.set_page_config(
