@@ -15,6 +15,7 @@ def get_colormap(cmap_name='YlOrBr', vmin=0, vmax=0.2, num_colors=10, invert=Fal
     
     # If invert is True, reverse the color list
     if invert:
+        cmap_name='blues'
         colors = colors[::-1]
     
     # Create the LinearColormap
