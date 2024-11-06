@@ -141,7 +141,7 @@ else:
                 "weight": 2,              # Thicker border on hover
                 "stroke": True,           # Add stroke on hover
                 "color": "#ff0000",       # Red border on hover
-                "popup": popup_content    # Show the popup with the desired columns
+                "tooltip": popup_content    # Show the popup with the desired columns
             }
 
         # Add a choropleth layer based on NUTS boundaries without outlines
