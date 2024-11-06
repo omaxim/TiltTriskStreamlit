@@ -142,9 +142,9 @@ else:
             fields=[weight,'NAME_LATN'],
             aliases=["Weight (%)", "Region"],
             style=("background-color: white; color: black; font-weight: bold;"),
-            formatters={
-                weight: lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
-            },
+            #formatters={
+            #    weight: lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
+            #},
             sticky=True
 
         )
