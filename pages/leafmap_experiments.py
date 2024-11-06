@@ -143,8 +143,7 @@ else:
             column=weight,
             layer_name=weight,
             add_legend=False,
-            edge_color=None,  # Remove boundary outlines
-            edge_width=0,     # Ensure edge width is set to zero
+            labels=weight,
             fill_opacity=0.7,  # Adjust fill opacity for better visibility
             style_function=style_function,       # Apply the style function
             highlight_function=highlight_function,  # Apply the highlight function on hover
