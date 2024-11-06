@@ -5,6 +5,8 @@ from shapely.geometry import Point
 import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
 import branca
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 
 st.set_page_config(
@@ -95,14 +97,22 @@ else:
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
         # Define the style_function to dynamically apply color based on the `weight` column
         # Define the colormap manually (from light to dark)
-        colormap = [
-            "#ffffcc", "#ffcc99", "#ff9966", "#ff6600", "#cc3300"
-        ]
-        # Create a linear color map using branca
-        colormap = branca.colormap.StepColormap(
-            colors=["white","red"],
-            vmin=0,
-            vmax=0.2
+
+        # Parameters for the colormap
+        cmap_name = 'YlOrRd'  # Example colormap name
+        vmin = 0              # Minimum value for the colormap
+        vmax = 1              # Maximum value for the colormap
+        num_colors = 10        # Number of colors to sample
+
+        # Generate colors from the selected cmap name
+        cmap = plt.get_cmap(cmap_name)
+        colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)]
+
+        # Create a linear colormap in branca
+        colormap = branca.colormap.LinearColormap(
+            colors=colors,
+            vmin=vmin,
+            vmax=vmax
         )
 
         def style_function(feature):

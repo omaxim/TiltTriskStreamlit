@@ -11,3 +11,4 @@ leafmap
 mapclassify
 numpy
 branca
+matplotlib
