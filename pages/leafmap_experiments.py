@@ -10,7 +10,6 @@ import matplotlib.colors as mcolors
 
 def get_colormap(cmap_name = 'YlOrBr',vmin = 0,vmax = 0.2,num_colors = 10,invert=False):
     cmap = plt.get_cmap(cmap_name)
-    colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)]
     if invert:
         colors = [mcolors.rgb2hex(cmap(i / (num_colors - 1))) for i in range(num_colors)].reverse()
     else:
