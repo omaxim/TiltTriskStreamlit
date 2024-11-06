@@ -19,7 +19,7 @@ def load_nuts_data():
 nuts_gdf = load_nuts_data()
 
 colx,col1,sepcol,col2,coly = st.columns([1,3,1,3,1])
-col1.title("SME geographic T-risk")
+col1.title("SME T-risk")
 col2.title("")
 
 # Load and cache the data
