@@ -3,7 +3,14 @@ import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 import leafmap.foliumap as leafmap
+from visualsetup import load_visual_identity
 
+st.set_page_config(
+    page_title="SME trisk model",
+    page_icon="logo.png",
+    layout="wide"
+)
+load_visual_identity('header.png')
 # Load the NUTS shapefile
 @st.cache_data
 def load_nuts_data():
