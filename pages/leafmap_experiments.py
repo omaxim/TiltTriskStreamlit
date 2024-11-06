@@ -96,7 +96,7 @@ else:
             column=weight,
             cmap="YlOrRd",
             layer_name="PD Shock Intensity by Region",
-            legend_kwds={"fmt": "{:.0%}"}
+            legend_kwds={"fmt": "{:.0%}"},
             legend_title="PD Shock Intensity by Region",
             edge_color=None,  # Remove boundary outlines
             edge_width=0,     # Ensure edge width is set to zero
