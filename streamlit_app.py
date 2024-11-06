@@ -13,11 +13,14 @@ st.set_page_config(
     layout="wide"
 )
 load_visual_identity('header.jpg')
+
 st.logo(image='TheiaLogo.svg',icon_image='logo.png',size='large')
 
 nuts_gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
 # Display map in Streamlit
-st.title("Heatmap Over Time by Address")
+st.title("")
+st.title("")
+st.title("SME geographic T-risk")
 
 # Load and cache the data
 @st.cache_data
