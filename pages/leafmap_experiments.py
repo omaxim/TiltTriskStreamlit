@@ -91,15 +91,13 @@ else:
         nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight]#.map('{:.2%}'.format)
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
+        
         # Fixed vmin and vmax for consistency across visualizations
         vmin = 0
         vmax = 0.2
-
-        # Define the colors for the color scale manually
-        colors = ['#ffffcc', '#ffcc99', '#ff9966', '#ff6600', '#cc3300']  # Yellow-Orange-Red
         # Add the colorbar to the map with the fixed range
         m2.add_colormap(
-            colors=colors,        # List of colors
+            palette='YlOrRd',        # List of colors
             vmin=vmin,            # Set the minimum value for color mapping
             vmax=vmax,            # Set the maximum value for color mapping
             caption="PD Shock Intensity by Region",  # Colorbar caption
