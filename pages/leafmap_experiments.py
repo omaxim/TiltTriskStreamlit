@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
-import folium
 import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
 
