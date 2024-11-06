@@ -92,16 +92,6 @@ else:
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
 
-        # Fixed vmin and vmax for consistency across visualizations
-        vmin = 0
-        vmax = 0.2
-        # Add the colorbar to the map with the fixed range
-        m2.add_colormap(
-            palette='YlOrRd',        # List of colors
-            vmin=vmin,            # Set the minimum value for color mapping
-            vmax=vmax,            # Set the maximum value for color mapping
-        )
-
         # Add a choropleth layer based on NUTS boundaries without outlines
         m2.add_data(
             nuts_gdf_levelled,
@@ -111,7 +101,9 @@ else:
             legend_title="PD Shock Intensity by Region",
             edge_color=None,  # Remove boundary outlines
             edge_width=0,     # Ensure edge width is set to zero
-            fill_opacity=0.7  # Adjust fill opacity for better visibility
+            fill_opacity=0.7,  # Adjust fill opacity for better visibility
+            vmin=0,            # Set the minimum value for color mapping
+            vmax=0.2,            # Set the maximum value for color mapping
         )
 
         # Display the map in Streamlit
