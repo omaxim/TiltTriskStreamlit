@@ -11,6 +11,8 @@ st.set_page_config(
     layout="wide"
 )
 load_visual_identity('header.png')
+st.logo(icon_image='TheiaLogo.svg',image='logo.png',size='large')
+
 # Load the NUTS shapefile
 @st.cache_data
 def load_nuts_data():
