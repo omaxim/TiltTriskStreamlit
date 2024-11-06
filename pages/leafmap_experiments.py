@@ -94,6 +94,7 @@ else:
         m2.add_data(
             nuts_gdf_levelled,
             column=weight,
+            vmax=0.2,
             cmap="YlOrRd",
             layer_name="PD Shock Intensity by Region",
             legend_kwds={"fmt": "{:.2%}"},
