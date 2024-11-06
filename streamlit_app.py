@@ -25,9 +25,10 @@ def load_data():
     return pd.read_feather('tiltrisk_geocoded.feather')
 
 data = load_data()
+col1,col2 = st.columns(2)
 
 # Selection for weight column to visualize
-weight = st.selectbox(
+weight = col1.selectbox(
     'Select Weighting for Heatmap',
     [
         'pd_baseline',
@@ -37,7 +38,6 @@ weight = st.selectbox(
     ]
 )
 
-col1,col2 = st.columns(2)
 # Select baseline scenario
 baseline_scenario = col1.selectbox('Baseline Scenario', data['baseline_scenario'].unique())
 term = col1.selectbox('term',data['term'].unique())
