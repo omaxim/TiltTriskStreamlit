@@ -17,7 +17,8 @@ def load_nuts_data():
     return gpd.read_file("NUTS_RG_60M_2024_4326.shp")
 
 nuts_gdf = load_nuts_data()
-
+st.title("")
+st.title("")
 colx,col1,sepcol,col2,coly = st.columns([1,3,1,3,1])
 col1.title("SME T-risk")
 col2.title("")
