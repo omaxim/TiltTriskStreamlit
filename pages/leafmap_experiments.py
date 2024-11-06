@@ -139,6 +139,7 @@ else:
             fill_opacity=0.7,  # Adjust fill opacity for better visibility
             style_function=style_function,       # Apply the style function
             highlight_function=highlight_function,  # Apply the highlight function on hover
+            fields=['weight','NAME_LATN']
         )
 
         # Display the map in Streamlit
