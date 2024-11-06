@@ -115,9 +115,9 @@ else:
             # Return the style for the feature
             return {
                 "fillColor": color,       # Color based on the value
-                "fillOpacity": 0.7,       # Adjust fill opacity
+                "fillOpacity": 0.9,       # Adjust fill opacity
                 "weight": 0,              # No outline weight
-                "stroke": False,          # No stroke (outline)
+                "stroke": True,          # No stroke (outline)
                 "color": "#ffffff",       # White border color (if needed)
             }
 
