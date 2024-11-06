@@ -117,7 +117,7 @@ else:
         # Define the style_function to dynamically apply color based on the `weight` column
         # Define the colormap manually (from light to dark)
         vmin = data[weight].min()
-        vmax=data[weight].max()
+        vmax=0.7*data[weight].max()
         if vmin<=-0.001:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20,invert=True)
         else:
