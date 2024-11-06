@@ -83,13 +83,6 @@ def load_visual_identity(header_image_path):
             background-color: #000000;
         }
 
-        /* Set sidebar text color */
-        [data-testid="stSidebar"] * {
-            color: #FFFFFF;
-        }
-        [data-testid="stHeader"] {
-            background-color: rgba(0,0,0,0);
-        }
         
     </style>
     """, unsafe_allow_html=True)
