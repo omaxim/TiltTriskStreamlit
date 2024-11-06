@@ -17,7 +17,7 @@ st.logo(icon_image='TheiaLogo.svg',image='logo.png',size='large')
 @st.cache_data
 def load_nuts_data():
     gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
-    gdf_country = gdf[gdf['CNTR_CODE'].isin(['FR','DE'])]
+    gdf_country = gdf[gdf['CNTR_CODE'].isin(['FR','DE'])].drop(['NUTS_NAME','COAST_TYPE','URBN_TYPE','MOUNT_TYPE'],axis=1)
     return gdf_country
 
 nuts_gdf = load_nuts_data()
