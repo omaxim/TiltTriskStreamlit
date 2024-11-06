@@ -131,44 +131,24 @@ else:
                 "color": "#ff0000",       # Red border on hover
             }
 
-        ## Add a choropleth layer based on NUTS boundaries without outlines
-        #m2.add_data(
-        #    nuts_gdf_levelled,
-        #    column=weight,
-        #    layer_name=weight,
-        #    add_legend=False,
-        #    fill_opacity=0.7,  # Adjust fill opacity for better visibility
-        #    style_function=style_function,       # Apply the style function
-        #    highlight_function=highlight_function,  # Apply the highlight function on hover
-        #    #fields=[weight,'NAME_LATN'],
-        #    tooltip=folium.features.GeoJsonTooltip(
-        #    fields=[weight, 'NAME_LATN'],
-        #    aliases=["Weight (%)", "Region"],
-        #    style=("background-color: white; color: black; font-weight: bold;"),
-        #    sticky=True,
-        #    formatters={
-        #        weight: lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
-        #    }
-        #    )
-        #)
-        # Add GeoJson layer with tooltip
-        geojson = folium.GeoJson(
-            data=nuts_gdf_levelled,
-            name=weight,
-            style_function=style_function,
-            highlight_function=highlight_function,
-            tooltip=folium.features.GeoJsonTooltip(
-                fields=[weight, 'NAME_LATN'],
-                aliases=["Weight (%)", "Region"],
-                style=("background-color: white; color: black; font-weight: bold;"),
-                sticky=True,
-                formatters={
-                    weight: lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as percentage
-                }
-            )
+        # Add a choropleth layer based on NUTS boundaries without outlines
+        m2.add_data(
+            nuts_gdf_levelled,
+            column=weight,
+            layer_name=weight,
+            add_legend=False,
+            fill_opacity=0.7,  # Adjust fill opacity for better visibility
+            style_function=style_function,       # Apply the style function
+            highlight_function=highlight_function,  # Apply the highlight function on hover
+            fields=[weight,'NAME_LATN'],
+            aliases=["Weight (%)", "Region"],
+            style=("background-color: white; color: black; font-weight: bold;"),
+            formatters={
+                weight: lambda x: f"{x:.2%}" if x is not None else "N/A",  # Format as a percentage
+            },
+            sticky=True
+
         )
-        # Add the GeoJson layer to the map
-        geojson.add_to(m2)
 
         # Display the map in Streamlit
         with col2:
