@@ -102,7 +102,7 @@ else:
             edge_width=0,     # Ensure edge width is set to zero
             fill_opacity=0.7  # Adjust fill opacity for better visibility
         )
-        m2.add_colorbar(colors='y',vmin=0,vmax=0.2)
+        m2.add_colorbar(colors=['white','red'],vmin=0,vmax=0.2)
 
         # Display the map in Streamlit
         with col2:
