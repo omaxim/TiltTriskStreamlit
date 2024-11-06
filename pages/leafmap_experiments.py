@@ -4,6 +4,8 @@ import geopandas as gpd
 from shapely.geometry import Point
 import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
+from branca.colormap import linear
+
 
 st.set_page_config(
     page_title="SME T-risk",
@@ -16,6 +18,7 @@ st.logo(icon_image='TheiaLogo.svg',image='logo.png',size='large')
 # Load the NUTS shapefile
 @st.cache_data
 def load_nuts_data():
+
     gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
     gdf_country = gdf[gdf['CNTR_CODE'].isin(['FR','DE'])].drop(['NUTS_NAME','COAST_TYPE','URBN_TYPE','MOUNT_TYPE'],axis=1)
     return gdf_country.loc[~gdf_country['NUTS_ID'].isin(['FRY','FRY1','FRY2','FRY3','FRY4','FRY5'])] #Remove french colonies from the map
@@ -73,6 +76,7 @@ else:
 
     # Spatially join the data with NUTS boundaries
     data_with_nuts = gpd.sjoin(data_gdf, nuts_gdf_levelled, how="left", predicate="within")
+    colormap = linear.YlOrRd.scale(0, 0.2)
 
     # Check for empty join results
     if data_with_nuts.empty:
@@ -91,12 +95,13 @@ else:
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
         # Add a choropleth layer based on NUTS boundaries without outlines
+
         m2.add_data(
             nuts_gdf_levelled,
             column=weight,
             vmin=0,
             vmax=0.2,
-            cmap="YlOrRd",
+            cmap=colormap,
             layer_name="PD Shock Intensity by Region",
             legend_kwds={"fmt": "{:.2%}"},
             legend_title="PD Shock Intensity by Region",
