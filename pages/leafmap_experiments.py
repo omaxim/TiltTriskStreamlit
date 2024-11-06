@@ -4,7 +4,6 @@ import geopandas as gpd
 from shapely.geometry import Point
 import leafmap.foliumap as leafmap
 from visualsetup import load_visual_identity
-import numpy as np
 
 st.set_page_config(
     page_title="SME T-risk",
@@ -94,30 +93,24 @@ else:
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
         # Define the style_function to dynamically apply color based on the `weight` column
         # Define the colormap manually (from light to dark)
-        # Define the colormap (you can keep this as is or adjust as needed)
         colormap = [
             "#ffffcc", "#ffcc99", "#ff9966", "#ff6600", "#cc3300"
         ]
-
-        # Define a function to normalize the weight value based on min and max
-        def get_color_for_value(value, vmin, vmax):
-            # Normalize the value to a 0-1 range
-            normalized_value = (value - vmin) / (vmax - vmin) if vmax > vmin else 0
-            # Map normalized value to an index in the colormap
-            color_index = int(np.floor(normalized_value * (len(colormap) - 1)))
-            return colormap[color_index]
-
-        # Create the style function using the dynamic min/max range
         def style_function(feature):
             # Get the value from the `weight` column for the feature
-            value = feature["properties"].get(weight)  # Adjust "weight" to your actual column name
+            value = feature["properties"].get(weight)  # Adjust "weight" as per your actual column name
 
-            # Ensure the colormap is properly scaled to the data range
-            vmin = 0
-            vmax = 0.2#aggregated_data[weight].max()  # Adjust for your actual GeoJSON structure
-
-            # Map the value to a color
-            color = get_color_for_value(value, vmin, vmax)
+            # Map the value to a color based on the predefined colormap
+            if value <= 0.05:
+                color = colormap[0]
+            elif value <= 0.1:
+                color = colormap[1]
+            elif value <= 0.15:
+                color = colormap[2]
+            elif value <= 0.2:
+                color = colormap[3]
+            else:
+                color = colormap[4]
 
             # Return the style for the feature
             return {
@@ -128,20 +121,13 @@ else:
                 "color": "#ffffff",       # White border color (if needed)
             }
 
-        # Define the highlight function to change the style when a feature is highlighted (hovered)
+        # Define the highlight_function to change the style when a feature is highlighted (hovered)
         def highlight_function(feature):
-            # Get the 'weight' and 'NAME_LATN' values from the feature properties
-            weight_value = feature["properties"].get(weight)
-            name_latn = feature["properties"].get("NAME_LATN")  # Adjust if necessary
-
-            # Create a popup content string to show only the weight and NAME_LATN columns
-            popup_content = f"<b>Weight:</b> {weight_value}<br><b>NAME_LATN:</b> {name_latn}"
             return {
                 "fillOpacity": 0.9,       # Slightly increase opacity on hover
                 "weight": 2,              # Thicker border on hover
                 "stroke": True,           # Add stroke on hover
                 "color": "#ff0000",       # Red border on hover
-                "tooltip": popup_content    # Show the popup with the desired columns
             }
 
         # Add a choropleth layer based on NUTS boundaries without outlines
@@ -150,10 +136,13 @@ else:
             column=weight,
             layer_name=weight,
             add_legend=False,
+            edge_color=None,  # Remove boundary outlines
+            edge_width=0,     # Ensure edge width is set to zero
             fill_opacity=0.7,  # Adjust fill opacity for better visibility
             style_function=style_function,       # Apply the style function
             highlight_function=highlight_function,  # Apply the highlight function on hover
         )
+
         # Display the map in Streamlit
         with col2:
             m2.to_streamlit(width=700, height=500,add_layer_control=False)
