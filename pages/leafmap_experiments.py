@@ -87,7 +87,7 @@ else:
         # Handle missing values if necessary
         if nuts_gdf_levelled[weight].isna().any():
             nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(0)  # Fill NaNs with 0 or a default value
-        nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].map('{:.2%}'.format)
+        nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight]#.map('{:.2%}'.format)
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
         # Add a choropleth layer based on NUTS boundaries without outlines
@@ -96,6 +96,7 @@ else:
             column=weight,
             cmap="YlOrRd",
             layer_name="PD Shock Intensity by Region",
+            legend_kwds={"fmt": "{:.0%}"}
             legend_title="PD Shock Intensity by Region",
             edge_color=None,  # Remove boundary outlines
             edge_width=0,     # Ensure edge width is set to zero
