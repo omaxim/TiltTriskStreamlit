@@ -122,7 +122,7 @@ else:
         else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20)
 
-        m2.add_colormap(width=0.3, height=2, vmin=vmin, vmax=vmax,palette='YlOrBr',transparent=True,orientation='vertical',position=(85,0))
+        m2.add_colormap(width=0.3, height=2, vmin=100*vmin, vmax=100*vmax,palette='YlOrBr',label='%',transparent=True,orientation='vertical',position=(85,0))
 
         def style_function(feature):
             # Get the value from the `weight` column for the feature
