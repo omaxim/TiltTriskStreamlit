@@ -73,10 +73,22 @@ shock_scenario = col1.selectbox('Shock Scenario', valid_shock_scenarios)
 sector = col1.selectbox('Select the Sector', data['ald_business_unit'].unique())
 
 def format_column(col):
+    # Check if the column consists of numeric values
     if pd.api.types.is_numeric_dtype(col):
-        return col.apply(lambda x: f"{x:.3%}" if abs(x) < 1 else (
-                                 f"{x:.0f}" if abs(x) < 3000 else f"{x:,.0f}"))
+        return col.apply(lambda x: 
+            # If the absolute value is less than 1, format as a percentage with 3 decimal places
+            f"{x:.3%}" if abs(x) < 1 else (
+            
+            # If the absolute value is between 0 and 180 (inclusive), return the value as is
+            f"{x:.0f}" if 0 <= abs(x) <= 180 else (
+            
+            # If the absolute value is less than 3000, format as an integer without decimals
+            f"{x:.0f}" if abs(x) < 3000 else 
+            
+            # If the absolute value is greater than or equal to 3000, format with commas for thousands
+            f"{x:,.0f}")))
     else:
+        # Return the column as is if it is not numeric
         return col
     
 filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_business_unit'].isin([sector])].dropna(subset='latitude')
