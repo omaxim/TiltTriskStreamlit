@@ -53,7 +53,7 @@ data = load_data()
 
 # Sidebar Controls for user selections
 weight = col1.selectbox('Select Weighting for Heatmap', ['pd_baseline', 'pd_shock', 'crispy_perc_value_change', 'pd_difference'])
-baseline_scenario = col1.selectbox('Baseline Scenario', [col.split('_')[1] for col in data.columns if col.startswith(f"{weight}_")])
+baseline_scenario = col1.selectbox('Baseline Scenario', [col.split('_')[2] for col in data.columns if col.startswith(f"{weight}_")])
 term = col1.selectbox('Term', [col.split('_')[3] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_")])
 shock_scenario = col1.selectbox('Shock Scenario', [col.split('_')[2] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_")])
 sector = col1.selectbox('Select the Sector', [col.split('_')[4] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_{shock_scenario}_{term}_")])
