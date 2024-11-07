@@ -109,7 +109,7 @@ else:
 
         # Merge aggregated data back with NUTS shapefile
         nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left').dropna()
-        nuts_gdf_levelled[weight+'_'+sector] = nuts_gdf_levelled[weight].apply(lambda x: f"{x:.3%}")
+        nuts_gdf_levelled[weight+' '+sector] = nuts_gdf_levelled[weight].apply(lambda x: f"{x:.3%}")
 
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
@@ -157,7 +157,7 @@ else:
             fill_opacity=0.7,  # Adjust fill opacity for better visibility
             style_function=style_function,       # Apply the style function
             highlight_function=highlight_function,  # Apply the highlight function on hover
-            fields=['NAME_LATN','formatted_weight'],
+            fields=['NAME_LATN',weight+' '+sector],
             style=("background-color: white; color: black; font-weight: bold;"),
             sticky=True
 
