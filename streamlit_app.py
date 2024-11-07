@@ -71,7 +71,7 @@ valid_shock_scenarios = data[data['baseline_scenario'] == baseline_scenario]['sh
 shock_scenario = col1.selectbox('Shock Scenario', valid_shock_scenarios)
 sector = col1.selectbox('Select the Sector', data['ald_sector'].unique())
 
-filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_sector'].isin([sector])]
+filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_sector'].isin([sector])].dropna(subset='latitude')
 select_company = st.multiselect('Search Company',filtered_data['company_name'].unique())
 selected_companies = filtered_data.loc[data['company_name'].isin(select_company)]
 st.dataframe(selected_companies)
