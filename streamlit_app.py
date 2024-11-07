@@ -72,9 +72,16 @@ valid_shock_scenarios = data[data['baseline_scenario'] == baseline_scenario]['sh
 shock_scenario = col1.selectbox('Shock Scenario', valid_shock_scenarios)
 sector = col1.selectbox('Select the Sector', data['ald_business_unit'].unique())
 
+def format_column(col):
+    # Only apply formatting to numeric types
+    if pd.api.types.is_numeric_dtype(col):
+        return col.apply(lambda x: f"{x:,.2f}" if abs(x) < 1e6 else f"{x:,.0f}")
+    else:
+        return col
+    
 filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_business_unit'].isin([sector])].dropna(subset='latitude')
 select_company = st.multiselect('Search Company',filtered_data['company_name'].unique())
-selected_companies = filtered_data.loc[data['company_name'].isin(select_company)]
+selected_companies = filtered_data.loc[data['company_name'].isin(select_company)].apply(format_column)
 st.dataframe(selected_companies)
 
 # Filter data based on selections
