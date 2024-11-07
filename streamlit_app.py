@@ -82,6 +82,7 @@ def format_column(col):
 filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_business_unit'].isin([sector])].dropna(subset='latitude')
 select_company = st.multiselect('Search Company',filtered_data['company_name'].unique())
 selected_companies = filtered_data.loc[data['company_name'].isin(select_company)].apply(format_column)
+selected_companies['year'] = selected_companies['term'] + selected_companies['start_year']
 st.dataframe(selected_companies)
 
 # Filter data based on selections
@@ -170,7 +171,7 @@ else:
 
         )
 
-        m2.add_circle_markers_from_xy(selected_companies,x='longitude',y='latitude',popup=['company_name','net_present_value_baseline','net_present_value_shock','net_present_value_difference','pd_baseline','pd_shock','pd_difference','crispy_perc_value_change',],size=20)
+        m2.add_circle_markers_from_xy(selected_companies,x='longitude',y='latitude',popup=['company_name','year','net_present_value_baseline','net_present_value_shock','net_present_value_difference','pd_baseline','pd_shock','pd_difference','crispy_perc_value_change',],size=20)
 
 
         # Display the map in Streamlit
