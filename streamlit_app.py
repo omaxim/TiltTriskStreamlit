@@ -113,7 +113,7 @@ else:
             
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
-        m2.add_circle_markers_from_xy(selected_companies,x='latitude',y='longitude',popup='company_name')
+        m2.add_circle_markers_from_xy(selected_companies,x='longitude',y='latitude',popup='company_name')
         # Define the style_function to dynamically apply color based on the `weight` column
         # Define the colormap manually (from light to dark)
         vmin = data[weight].min()
