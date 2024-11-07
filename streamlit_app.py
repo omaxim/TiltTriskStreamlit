@@ -165,8 +165,8 @@ else:
             sticky=True
 
         )
-        
-        m2.add_circle_markers_from_xy(selected_companies,x='longitude',y='latitude',popup='company_name')
+
+        m2.add_circle_markers_from_xy(selected_companies,x='longitude',y='latitude',popup='company_name',size=20)
 
 
         # Display the map in Streamlit
