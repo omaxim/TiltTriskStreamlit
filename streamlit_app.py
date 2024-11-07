@@ -45,8 +45,6 @@ def load_nuts_data():
     return gdf_country.loc[~gdf_country['NUTS_ID'].isin(french_colonies)] #Remove french colonies from the map
 
 nuts_gdf = load_nuts_data()
-st.title("")
-st.title("")
 col1,sepcol,col2,coly = st.columns([5,1,5,2])
 col1.title("SME T-risk")
 col2.title("")
