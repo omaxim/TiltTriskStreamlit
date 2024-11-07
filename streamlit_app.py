@@ -81,8 +81,8 @@ def format_column(col):
     
 filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_business_unit'].isin([sector])].dropna(subset='latitude')
 select_company = st.multiselect('Search Company',filtered_data['company_name'].unique())
+select_company['year'] = select_company['term'] + select_company['start_year']
 selected_companies = filtered_data.loc[data['company_name'].isin(select_company)].apply(format_column)
-selected_companies['year'] = selected_companies['term'] + selected_companies['start_year']
 st.dataframe(selected_companies)
 
 # Filter data based on selections
