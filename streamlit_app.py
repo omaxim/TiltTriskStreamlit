@@ -75,8 +75,8 @@ sector = col1.selectbox('Select the Sector', data['ald_sector'].unique())
 
 filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_sector'].isin([sector])]
 select_company = st.multiselect('Search Company',filtered_data['company_name'].unique())
-relevant_rows = filtered_data.loc[data['company_name'].isin(select_company)]
-st.dataframe(relevant_rows)
+selected_companies = filtered_data.loc[data['company_name'].isin(select_company)]
+st.dataframe(selected_companies)
 
 # Filter data based on selections
 data_withaddress = data.loc[
@@ -113,6 +113,7 @@ else:
             
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
+        m2.add_circle_markers_from_xy(selected_companies,x='latitude',y='longitude',popup='company_name')
         # Define the style_function to dynamically apply color based on the `weight` column
         # Define the colormap manually (from light to dark)
         vmin = data[weight].min()
