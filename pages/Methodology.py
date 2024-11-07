@@ -50,7 +50,7 @@ def load_data():
     return gpd.GeoDataFrame(pivot_data, geometry='geometry', crs="EPSG:4326")
 
 data = load_data()
-st.dataframe(data)
+st.dataframe(data.head(5))
 # Sidebar Controls for user selections
 weight = col1.selectbox('Select Weighting for Heatmap', ['pd_baseline', 'pd_shock', 'crispy_perc_value_change', 'pd_difference'])
 baseline_scenario = col1.selectbox('Baseline Scenario', [col.split('_')[-1] for col in data.columns if col.startswith(f"{weight}_")])
