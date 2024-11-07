@@ -69,9 +69,9 @@ term = col1.slider('Year', data['term'].unique().min()+2021,data['term'].unique(
 # Filter valid shock scenarios based on baseline scenario selection
 valid_shock_scenarios = data[data['baseline_scenario'] == baseline_scenario]['shock_scenario'].unique()
 shock_scenario = col1.selectbox('Shock Scenario', valid_shock_scenarios)
-sector = col1.selectbox('Select the Sector', data['ald_sector'].unique())
+sector = col1.selectbox('Select the Sector', data['ald_business_unit'].unique())
 
-filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_sector'].isin([sector])].dropna(subset='latitude')
+filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_business_unit'].isin([sector])].dropna(subset='latitude')
 select_company = st.multiselect('Search Company',filtered_data['company_name'].unique())
 selected_companies = filtered_data.loc[data['company_name'].isin(select_company)]
 st.dataframe(selected_companies)
