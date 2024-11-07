@@ -106,11 +106,8 @@ else:
         aggregated_data = data_with_nuts.groupby('NUTS_ID')[weight].mean().reset_index()
 
         # Merge aggregated data back with NUTS shapefile
-        nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
+        nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left').dropna()
         st.dataframe(nuts_gdf_levelled.head())
-        # Handle missing values if necessary
-        if nuts_gdf_levelled[weight].isna().any():
-            nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(nuts_gdf_levelled[weight].mean())  # Fill NaNs with 0 or a default value
             
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
