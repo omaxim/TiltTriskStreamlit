@@ -72,7 +72,7 @@ term = col1.slider('Year', data['term'].unique().min()+2021,data['term'].unique(
 valid_shock_scenarios = data[data['baseline_scenario'] == baseline_scenario]['shock_scenario'].unique()
 shock_scenario = col1.selectbox('Shock Scenario', valid_shock_scenarios)
 
-filtered_data = data.loc[data['baseline_scenario'].isin(baseline_scenario)].loc[data['term'].isin([str(term)])]
+filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([str(term)])]
 select_company = st.multiselect('Search Company',filtered_data['company_name'].unique())
 relevant_rows = data.loc[data['company_name'].isin(select_company)]
 st.dataframe(relevant_rows.head())
