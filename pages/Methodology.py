@@ -8,10 +8,10 @@ st.set_page_config(
 )
 load_visual_identity('header.png')
 st.logo(icon_image='TheiaLogo.svg',image='logo.png',size='large')
+sepcol,col,coly = st.columns([1,5,2])
+col.title("Methodology")
 
-st.title("Methodology")
-
-st.markdown("""
+col.markdown("""
 This Streamlit application, **"SME T-risk,"** visualizes risk metrics and economic scenarios for SMEs across specified regions, integrating geographic and statistical data. The methodology is as follows:
 
 ### 1. Load and Configure Visualization
