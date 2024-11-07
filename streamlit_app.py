@@ -109,7 +109,7 @@ else:
 
         # Merge aggregated data back with NUTS shapefile
         nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left').dropna()
-        nuts_gdf_levelled['formatted_weight'] = nuts_gdf_levelled[weight].apply(lambda x: f"{x:.3%}")
+        nuts_gdf_levelled[weight+' '+sector] = nuts_gdf_levelled[weight].apply(lambda x: f"{x:.3%}")
 
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
