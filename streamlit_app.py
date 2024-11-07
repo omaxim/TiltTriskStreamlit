@@ -75,7 +75,7 @@ sector = col1.selectbox('Select the Sector', data['ald_business_unit'].unique())
 def format_column(col):
     if pd.api.types.is_numeric_dtype(col):
         return col.apply(lambda x: f"{x:.3%}" if abs(x) < 1 else (
-                                 f"{x:,.2f}" if abs(x) < 1e2 else f"{x:,.0f}"))
+                                 f"{x:.2f}" if abs(x) < 1e2 else f"{x:,.0f}"))
     else:
         return col
     
