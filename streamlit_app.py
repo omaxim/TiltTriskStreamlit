@@ -63,8 +63,8 @@ weight = col1.selectbox(
     'Select Weighting for Heatmap',
     ['pd_baseline', 'pd_shock', 'crispy_perc_value_change', 'pd_difference']
 )
-#select_company = st.multiselect('Search Company',data[])
-st.dataframe(data.head())
+select_company = st.multiselect('Search Company',data['company_name'].unique())
+st.dataframe(data.loc[data['company_name']==select_company].head())
 # Select baseline scenario and filter data
 baseline_scenario = col1.selectbox('Baseline Scenario', data['baseline_scenario'].unique())
 term = col1.slider('Year', data['term'].unique().min()+2021,data['term'].unique().max()+2021)-2021
