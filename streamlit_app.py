@@ -31,12 +31,8 @@ def get_colormap(cmap_name='YlOrBr', vmin=0, vmax=0.2, num_colors=10, invert=Fal
 st.set_page_config(
     page_title="SME T-risk",
     page_icon="logo.png",
-    layout="wide",
-    menu_items={
-        'Theia Finance Labs': 'https://theiafinance.org/',
-        '1in1000': "https://www.1in1000.com/",
-        'About': "# This app was made by the 1in1000 team"
-    }
+    layout="wide"
+
 )
 load_visual_identity('header.png')
 st.logo(icon_image='TheiaLogo.svg',image='logo.png',size='large')
