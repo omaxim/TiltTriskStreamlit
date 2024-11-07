@@ -47,7 +47,7 @@ def load_nuts_data():
 nuts_gdf = load_nuts_data()
 st.title("")
 st.title("")
-colx,col1,sepcol,col2,coly = st.columns([1,5,1,5,2])
+col1,sepcol,col2,coly = st.columns([5,1,5,2])
 col1.title("SME T-risk")
 col2.title("")
 
