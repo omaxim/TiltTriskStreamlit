@@ -74,7 +74,7 @@ shock_scenario = col1.selectbox('Shock Scenario', valid_shock_scenarios)
 
 filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])]
 select_company = st.multiselect('Search Company',filtered_data['company_name'].unique())
-relevant_rows = data.loc[data['company_name'].isin(select_company)]
+relevant_rows = filtered_data.loc[data['company_name'].isin(select_company)]
 st.dataframe(relevant_rows.head())
 # Select sector
 sector = col1.selectbox('Select the Sector', data['ald_sector'].unique())
