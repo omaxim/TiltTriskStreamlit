@@ -47,7 +47,17 @@ def load_data():
     for level in [1, 2, 3]:
         nuts_level_gdf = nuts_gdf[nuts_gdf['LEVL_CODE'] == level]
         data_with_nuts = gpd.sjoin(trisk_gdf, nuts_level_gdf, how="left", predicate="within")
-        aggregated_data = data_with_nuts.groupby('NUTS_ID').mean().reset_index()
+
+        # Check for NaN values in NUTS_ID and filter them out
+        if data_with_nuts['NUTS_ID'].isna().any():
+            st.warning(f"Some data points could not be assigned a NUTS region at level {level}. These will be ignored in the aggregation.")
+        data_with_nuts = data_with_nuts.dropna(subset=['NUTS_ID'])
+
+        # Aggregate only numeric columns with mean, excluding 'geometry' column
+        agg_columns = [col for col in data_with_nuts.columns if col != 'geometry']
+        aggregated_data = data_with_nuts.groupby('NUTS_ID')[agg_columns].mean().reset_index()
+        
+        # Merge aggregated data with the NUTS level GeoDataFrame
         nuts_level_aggregated = nuts_level_gdf.merge(aggregated_data, on='NUTS_ID', how='left')
         nuts_level_aggregated = nuts_level_aggregated.fillna(0)
         nuts_levels_aggregated.append(nuts_level_aggregated)
