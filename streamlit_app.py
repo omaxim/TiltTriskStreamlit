@@ -73,9 +73,9 @@ shock_scenario = col1.selectbox('Shock Scenario', valid_shock_scenarios)
 sector = col1.selectbox('Select the Sector', data['ald_business_unit'].unique())
 
 def format_column(col):
-    # Only apply formatting to numeric types
     if pd.api.types.is_numeric_dtype(col):
-        return col.apply(lambda x: f"{x:,.2f}" if abs(x) < 1e6 else f"{x:,.0f}")
+        return col.apply(lambda x: f"{x * 100:.3f}%" if abs(x) < 1 else (
+                                 f"{x:,.2f}" if abs(x) < 1e6 else f"{x:,.0f}"))
     else:
         return col
     
