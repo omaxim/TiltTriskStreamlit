@@ -34,7 +34,7 @@ nuts_gdf = load_nuts_data()
 # Pivoted Data Loading Function
 @st.cache_data
 def load_data():
-    data = pd.read_feather('tiltrisk_geocoded.feather').dropna(subset=['latitude', 'longitude'])
+    data = pd.read_feather('tiltrisk_geocoded.feather').dropna(subset=['latitude', 'longitude']).replace('_', '', regex=True)
     # Pivot the data
     pivot_data = data.pivot_table(
         index=['latitude', 'longitude'],
@@ -54,9 +54,9 @@ st.dataframe(data.head(5))
 # Sidebar Controls for user selections
 weight = col1.selectbox('Select Weighting for Heatmap', ['pd_baseline', 'pd_shock', 'crispy_perc_value_change', 'pd_difference'])
 baseline_scenario = col1.selectbox('Baseline Scenario', [col.split('_')[-1] for col in data.columns if col.startswith(f"{weight}_")])
-term = col1.selectbox('Term', [col.split('_')[3] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_")])
+term = col1.selectbox('Term', [col.split('_')[-2] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_")])
 shock_scenario = col1.selectbox('Shock Scenario', [col.split('_')[2] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_")])
-sector = col1.selectbox('Select the Sector', [col.split('_')[4] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_{shock_scenario}_{term}_")])
+sector = col1.selectbox('Select the Sector', [col.split('_')[-1] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_{shock_scenario}_{term}_")])
 
 # Filter for selected column
 selected_column = f"{weight}_{baseline_scenario}_{shock_scenario}_{term}_{sector}"
