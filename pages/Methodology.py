@@ -21,36 +21,53 @@ load_visual_identity('header.png')
 st.logo(icon_image='TheiaLogo.svg', image='logo.png', size='large')
 
 # Load the NUTS shapefile
+# Updated load_data function with precomputed spatial joins at all NUTS levels
 @st.cache_data
-def load_nuts_data():
-    gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
-    gdf_country = gdf[gdf['CNTR_CODE'].isin(['FR','DE'])].drop(['NUTS_NAME', 'COAST_TYPE', 'URBN_TYPE', 'MOUNT_TYPE'], axis=1)
-    french_colonies = ['FRY', 'FRY1', 'FRY2', 'FRY3', 'FRY4', 'FRY5', 'FRY10', 'FRY20', 'FRY30', 'FRY40', 'FRY50']
-    return gdf_country.loc[~gdf_country['NUTS_ID'].isin(french_colonies)]
-colx,col1,sepcol,col2,coly = st.columns([1,5,1,5,2])
-
-nuts_gdf = load_nuts_data()
-
-# Pivoted Data Loading Function
-@st.cache_data
-def load_data():
+def load_data(nuts_gdf):
+    # Load the pivoted data
     data = pd.read_feather('tiltrisk_geocoded.feather').dropna(subset=['latitude', 'longitude']).replace('_', '', regex=True)
+    
     # Pivot the data
     pivot_data = data.pivot_table(
         index=['latitude', 'longitude'],
         columns=['baseline_scenario', 'shock_scenario', 'term', 'ald_sector'],
         values=['pd_baseline', 'pd_shock', 'crispy_perc_value_change', 'pd_difference']
     )
+    
     # Flatten multi-index columns
     pivot_data.columns = ['_'.join(map(str, col)) for col in pivot_data.columns]
-    # Reset index to make latitude and longitude columns accessible
     pivot_data.reset_index(inplace=True)
+    
     # Convert to GeoDataFrame
     pivot_data['geometry'] = pivot_data.apply(lambda row: Point(row['longitude'], row['latitude']), axis=1)
-    return gpd.GeoDataFrame(pivot_data, geometry='geometry', crs="EPSG:4326")
+    pivot_gdf = gpd.GeoDataFrame(pivot_data, geometry='geometry', crs="EPSG:4326")
+    
+    # Precompute spatial joins for NUTS levels 1, 2, and 3
+    nuts_data_by_level = {}
+    for level in [1, 2, 3]:
+        nuts_level_gdf = nuts_gdf[nuts_gdf['LEVL_CODE'] == level]
+        
+        # Spatial join at this NUTS level
+        joined_data = gpd.sjoin(pivot_gdf, nuts_level_gdf, how="left", predicate="within")
+        
+        # Aggregate data by NUTS region for each column
+        aggregated_level_data = {}
+        for column in [col for col in pivot_data.columns if col != 'geometry']:
+            agg_data = joined_data.groupby('NUTS_ID')[column].mean().reset_index()
+            nuts_level_agg = nuts_level_gdf.merge(agg_data, on='NUTS_ID', how='left')
+            nuts_level_agg[column] = nuts_level_agg[column].fillna(0)  # Fill missing values with 0
+            aggregated_level_data[column] = nuts_level_agg
+        
+        nuts_data_by_level[level] = aggregated_level_data
+    
+    return nuts_data_by_level, pivot_gdf  # Return both the NUTS data and original pivoted GeoDataFrame
 
-data = load_data()
-st.dataframe(data.head(5))
+
+colx,col1,sepcol,col2,coly = st.columns([1,5,1,5,2])
+
+# Call the modified load_data function
+nuts_data_by_level, data = load_data(nuts_gdf)
+
 # Sidebar Controls for user selections
 weight = col1.selectbox('Select Weighting for Heatmap', ['pd_baseline', 'pd_shock', 'crispy_perc_value_change', 'pd_difference'])
 baseline_scenario = col1.selectbox('Baseline Scenario', set([col.split('_')[-4] for col in data.columns if col.startswith(f"{weight}_")]))
@@ -58,51 +75,43 @@ term = col1.selectbox('Term', set([col.split('_')[-2] for col in data.columns if
 shock_scenario = col1.selectbox('Shock Scenario', set([col.split('_')[-3] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_")]))
 sector = col1.selectbox('Select the Sector', set([col.split('_')[-1] for col in data.columns if col.startswith(f"{weight}_{baseline_scenario}_{shock_scenario}_{term}_")]))
 
-# Filter for selected column
+# Selected column for aggregation
 selected_column = f"{weight}_{baseline_scenario}_{shock_scenario}_{term}_{sector}"
 if selected_column not in data.columns:
     col1.warning("No data available for the selected criteria.")
 else:
+    # User-selected NUTS level
     NUTS_level = col1.slider('Regional Aggregation Level', 1, 3, 3, 1)
-    nuts_gdf_levelled = nuts_gdf[nuts_gdf['LEVL_CODE'] == NUTS_level]
+    
+    # Retrieve precomputed data for the selected column and NUTS level
+    nuts_gdf_levelled = nuts_data_by_level[NUTS_level][selected_column]
 
-    # Filter for selected data column and drop NaNs
-    data_selected = data[['geometry', selected_column]].dropna(subset=[selected_column])
+    # Display the map with precomputed data
+    vmin = data[selected_column].min()
+    vmax = 0.5 * data[selected_column].max()
+    colormap = get_colormap(vmin=vmin, vmax=vmax, num_colors=20, invert=(vmin <= -0.001))
 
-    # Spatial Join with NUTS
-    data_with_nuts = gpd.sjoin(data_selected, nuts_gdf_levelled, how="left", predicate="within")
-    if data_with_nuts.empty:
-        col1.warning("No spatial join results. Check your NUTS boundaries and input data.")
-    else:
-        aggregated_data = data_with_nuts.groupby('NUTS_ID')[selected_column].mean().reset_index()
-        nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
-        nuts_gdf_levelled[selected_column] = nuts_gdf_levelled[selected_column].fillna(0)
+    def style_function(feature):
+        value = feature["properties"].get(selected_column)
+        color = colormap(value) if value is not None else "#8c8c8c"
+        return {"fillColor": color, "fillOpacity": 0.9, "weight": 0.1, "stroke": True, "color": "#000000"}
 
-        vmin = data[selected_column].min()
-        vmax = 0.5 * data[selected_column].max()
-        colormap = get_colormap(vmin=vmin, vmax=vmax, num_colors=20, invert=(vmin <= -0.001))
+    def highlight_function(feature):
+        return {"fillOpacity": 0.9, "weight": 2, "stroke": True, "color": "#ff0000"}
 
-        def style_function(feature):
-            value = feature["properties"].get(selected_column)
-            color = colormap(value) if value is not None else "#8c8c8c"
-            return {"fillColor": color, "fillOpacity": 0.9, "weight": 0.1, "stroke": True, "color": "#000000"}
+    m2 = leafmap.Map(center=[data['latitude'].mean(), data['longitude'].mean()])
+    m2.add_data(
+        nuts_gdf_levelled,
+        column=selected_column,
+        layer_name=selected_column,
+        add_legend=False,
+        fill_opacity=0.7,
+        style_function=style_function,
+        highlight_function=highlight_function,
+        fields=['NAME_LATN', selected_column],
+        style=("background-color: white; color: black; font-weight: bold;"),
+        sticky=True
+    )
 
-        def highlight_function(feature):
-            return {"fillOpacity": 0.9, "weight": 2, "stroke": True, "color": "#ff0000"}
-
-        m2 = leafmap.Map(center=[data['latitude'].mean(), data['longitude'].mean()])
-        m2.add_data(
-            nuts_gdf_levelled,
-            column=selected_column,
-            layer_name=selected_column,
-            add_legend=False,
-            fill_opacity=0.7,
-            style_function=style_function,
-            highlight_function=highlight_function,
-            fields=['NAME_LATN', selected_column],
-            style=("background-color: white; color: black; font-weight: bold;"),
-            sticky=True
-        )
-
-        with col2:
-            m2.to_streamlit(width=700, height=500, add_layer_control=False)
+    with col2:
+        m2.to_streamlit(width=700, height=500, add_layer_control=False)
