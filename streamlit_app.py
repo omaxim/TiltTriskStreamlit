@@ -126,12 +126,10 @@ else:
         vmax=0.7*data[weight].max()
         if vmin<=-0.001:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20,invert=True)
-            m2.add_colormap(width=0.3, height=2, vmin=100*vmax, vmax=100*vmin,palette='YlOrBr',label='%',transparent=True,orientation='vertical',position=(85,0))
         else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20)
-            m2.add_colormap(width=0.3, height=2, vmin=100*vmin, vmax=100*vmax,palette='YlOrBr',label='%',transparent=True,orientation='vertical',position=(85,0))
 
-        
+        m2.add_colormap(width=0.3, height=2, vmin=100*abs(vmin), vmax=100*abs(vmax),palette='YlOrBr',label='%',transparent=True,orientation='vertical',position=(85,0))
 
         def style_function(feature):
             # Get the value from the `weight` column for the feature
