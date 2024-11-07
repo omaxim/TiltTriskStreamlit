@@ -21,6 +21,16 @@ load_visual_identity('header.png')
 st.logo(icon_image='TheiaLogo.svg', image='logo.png', size='large')
 
 # Load the NUTS shapefile
+@st.cache_data
+def load_nuts_data():
+    gdf = gpd.read_file("NUTS_RG_60M_2024_4326.shp")
+    gdf_country = gdf[gdf['CNTR_CODE'].isin(['FR','DE'])].drop(['NUTS_NAME', 'COAST_TYPE', 'URBN_TYPE', 'MOUNT_TYPE'], axis=1)
+    french_colonies = ['FRY', 'FRY1', 'FRY2', 'FRY3', 'FRY4', 'FRY5', 'FRY10', 'FRY20', 'FRY30', 'FRY40', 'FRY50']
+    return gdf_country.loc[~gdf_country['NUTS_ID'].isin(french_colonies)]
+colx,col1,sepcol,col2,coly = st.columns([1,5,1,5,2])
+
+nuts_gdf = load_nuts_data()
+
 # Updated load_data function with precomputed spatial joins at all NUTS levels
 @st.cache_data
 def load_data(nuts_gdf):
@@ -62,8 +72,8 @@ def load_data(nuts_gdf):
     
     return nuts_data_by_level, pivot_gdf  # Return both the NUTS data and original pivoted GeoDataFrame
 
-
-colx,col1,sepcol,col2,coly = st.columns([1,5,1,5,2])
+# Load NUTS shapefile
+nuts_gdf = load_nuts_data()
 
 # Call the modified load_data function
 nuts_data_by_level, data = load_data(nuts_gdf)
