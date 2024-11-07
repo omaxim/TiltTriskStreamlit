@@ -33,9 +33,9 @@ st.set_page_config(
     page_icon="logo.png",
     layout="wide",
     menu_items={
-        'Get Help': 'https://www.extremelycoolapp.com/help',
-        'Report a bug': "https://www.extremelycoolapp.com/bug",
-        'About': "# This is a header. This is an *extremely* cool app!"
+        'Theia Finance Labs': 'https://theiafinance.org/',
+        '1in1000': "https://www.1in1000.com/",
+        'About': "# This app was made by the 1in1000 team"
     }
 )
 load_visual_identity('header.png')
