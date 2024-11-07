@@ -110,8 +110,9 @@ else:
 
         # Handle missing values if necessary
         if nuts_gdf_levelled[weight].isna().any():
-            nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(0)  # Fill NaNs with 0 or a default value
-        nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight]#.map('{:.2%}'.format)
+            nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(nuts_gdf_levelled[weight].mean())  # Fill NaNs with 0 or a default value
+            
+        nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight]
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
         # Define the style_function to dynamically apply color based on the `weight` column
