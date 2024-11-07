@@ -64,7 +64,7 @@ weight = col1.selectbox(
     ['pd_baseline', 'pd_shock', 'crispy_perc_value_change', 'pd_difference']
 )
 select_company = st.multiselect('Search Company',data['company_name'].unique())
-relevant_rows = data.loc[data['company_name']==select_company]
+relevant_rows = data.loc[data['company_name'].isin(select_company)]
 st.dataframe(relevant_rows.head())
 # Select baseline scenario and filter data
 baseline_scenario = col1.selectbox('Baseline Scenario', data['baseline_scenario'].unique())
