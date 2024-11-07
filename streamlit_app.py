@@ -107,12 +107,11 @@ else:
 
         # Merge aggregated data back with NUTS shapefile
         nuts_gdf_levelled = nuts_gdf_levelled.merge(aggregated_data, on='NUTS_ID', how='left')
-
+        st.dataframe(nuts_gdf_levelled.head())
         # Handle missing values if necessary
         if nuts_gdf_levelled[weight].isna().any():
             nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight].fillna(nuts_gdf_levelled[weight].mean())  # Fill NaNs with 0 or a default value
             
-        nuts_gdf_levelled[weight] = nuts_gdf_levelled[weight]
         # Initialize a Leafmap object centered on the data points with a closer zoom level
         m2 = leafmap.Map(center=[data_withaddress['latitude'].mean(), data_withaddress['longitude'].mean()])
         # Define the style_function to dynamically apply color based on the `weight` column
@@ -123,7 +122,9 @@ else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20,invert=True)
         else:
             colormap = get_colormap(vmin=vmin,vmax=vmax,num_colors=20)
+
         m2.add_colormap(width=0.3, height=2, vmin=vmin, vmax=vmax,palette='YlOrBr',transparent=True,orientation='vertical',position=(85,0))
+
         def style_function(feature):
             # Get the value from the `weight` column for the feature
             value = feature["properties"].get(weight)  # Adjust "weight" as per your actual column name
