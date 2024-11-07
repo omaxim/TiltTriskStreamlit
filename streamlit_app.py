@@ -164,7 +164,7 @@ else:
 
         )
 
-        m2.add_circle_markers_from_xy(selected_companies,x='longitude',y='latitude',popup=['net_present_value_baseline','net_present_value_shock','net_present_value_difference','company_name','pd_baseline','pd_shock','pd_difference','crispy_perc_value_change',],size=20)
+        m2.add_circle_markers_from_xy(selected_companies,x='longitude',y='latitude',popup=['company_name','net_present_value_baseline','net_present_value_shock','net_present_value_difference','pd_baseline','pd_shock','pd_difference','crispy_perc_value_change',],size=20)
 
 
         # Display the map in Streamlit
