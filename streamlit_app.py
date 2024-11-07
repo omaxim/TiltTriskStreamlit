@@ -31,7 +31,12 @@ def get_colormap(cmap_name='YlOrBr', vmin=0, vmax=0.2, num_colors=10, invert=Fal
 st.set_page_config(
     page_title="SME T-risk",
     page_icon="logo.png",
-    layout="wide"
+    layout="wide",
+    menu_items={
+        'Get Help': 'https://www.extremelycoolapp.com/help',
+        'Report a bug': "https://www.extremelycoolapp.com/bug",
+        'About': "# This is a header. This is an *extremely* cool app!"
+    }
 )
 load_visual_identity('header.png')
 st.logo(icon_image='TheiaLogo.svg',image='logo.png',size='large')
