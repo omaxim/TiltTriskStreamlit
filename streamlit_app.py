@@ -76,7 +76,7 @@ sector = col1.selectbox('Select the Sector', data['ald_sector'].unique())
 filtered_data = data.loc[data['baseline_scenario'].isin([baseline_scenario])].loc[data['term'].isin([term])].loc[data['ald_sector'].isin([sector])]
 select_company = st.multiselect('Search Company',filtered_data['company_name'].unique())
 relevant_rows = filtered_data.loc[data['company_name'].isin(select_company)]
-st.dataframe(relevant_rows.head())
+st.dataframe(relevant_rows)
 
 # Filter data based on selections
 data_withaddress = data.loc[
