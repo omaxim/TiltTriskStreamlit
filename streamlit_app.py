@@ -80,10 +80,10 @@ def format_column(col):
             f"{x:.3%}" if abs(x) < 1 else (
             
             # If the absolute value is between 0 and 180 (inclusive), return the value as is
-            f"{x:.0f}" if 0 <= abs(x) <= 180 else (
+            x if 0 <= abs(x) <= 180 else (
             
             # If the absolute value is less than 3000, format as an integer without decimals
-            f"{x:.0f}" if abs(x) < 3000 else 
+            f"{x:.0f}" if 2000 <=abs(x) < 2100 else 
             
             # If the absolute value is greater than or equal to 3000, format with commas for thousands
             f"{x:,.0f}")))
